@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <a class="navbar-brand">Cocktails.Co</a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+            <li 
+                class="nav-item"
+                routerLink="/cocktails">
+                <a class="nav-link active">Cocktails</a>
+            </li>
+            <li 
+                class="nav-item"
+                routerLink="cocktails">
+                <a class="nav-link">Favourites</a>
+            </li>
+            <li 
+            class="nav-item"
+            routerLink="/shopping-list">
+                <a class="nav-link">Shopping List</a>
+            </li>
+        </ul>
+        <button
+            class="btn btn-light flex-right"
+            (click)="onCLick()">
+            {{isLogged ? 'Log out' : 'Log in'}}
+        </button>
+    </div>
+</nav>

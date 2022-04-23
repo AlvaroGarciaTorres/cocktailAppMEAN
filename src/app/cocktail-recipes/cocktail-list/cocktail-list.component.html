@@ -1,0 +1,18 @@
+<div class="row" *ngIf="!isLoading">
+    <div class="col">
+        <app-cocktail-item
+            [index] = i
+            [cocktail] = cocktail
+            *ngFor="let cocktail of cocktailList, let i = index">
+        </app-cocktail-item>
+    </div>
+    <div class="col-md-auto">
+        Hola
+    </div>
+</div>
+<div class="row" *ngIf="isLoading">
+    <div class="col">
+        Loading...
+    </div> 
+</div>
+
