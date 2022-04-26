@@ -1,4 +1,6 @@
-<mat-card class="example-card">
+<mat-card 
+    class="example-card"
+    (click)="onViewDetail()">
     <mat-card-title-group>
         <mat-card-title>{{ cocktail.strDrink }}</mat-card-title>
         <mat-card-subtitle>{{ cocktail.strCategory }}</mat-card-subtitle>

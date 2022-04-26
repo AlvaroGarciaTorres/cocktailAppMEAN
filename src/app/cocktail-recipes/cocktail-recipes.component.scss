@@ -1,0 +1,14 @@
+.expand{
+    flex-basis: 40%;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.fixed{
+    max-width: 50%;
+}
+
+.row{
+    flex-wrap: nowrap;
+    max-width: 100%;
+}

@@ -16,6 +16,8 @@ import { CocktailItemComponent } from './cocktail-recipes/cocktail-list/cocktail
 import { LogInService } from './log-in/log-in.service';
 import { CocktailsDbApiService } from './cocktail-recipes/cocktails-db-api-service';
 import {MatCardModule} from '@angular/material/card';
+import { FavouriteCocktailRecipesComponent } from './cocktail-recipes/favourite-cocktail-recipes/favourite-cocktail-recipes.component';
+import { CocktailDetailComponent } from './cocktail-recipes/cocktail-list/cocktail-detail/cocktail-detail.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import {MatCardModule} from '@angular/material/card';
     HeaderComponent,
     ShoppingListComponent,
     LogInComponent,
-    CocktailItemComponent
+    CocktailItemComponent,
+    FavouriteCocktailRecipesComponent,
+    CocktailDetailComponent
   ],
   imports: [
     BrowserModule,

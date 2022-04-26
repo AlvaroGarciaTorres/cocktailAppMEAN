@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Cocktail } from './cocktail.model';
 
 @Component({
   selector: 'app-cocktail-item',
@@ -7,11 +8,15 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 })
 export class CocktailItemComponent implements OnInit {
   @Input() index: number;
-  @Input() cocktail;
+  @Input() cocktail: Cocktail;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onViewDetail(){
+    
   }
 
 }
