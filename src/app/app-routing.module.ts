@@ -5,17 +5,18 @@ import { CocktailDetailComponent } from './cocktail-recipes/cocktail-list/cockta
 import { CocktailRecipesComponent } from './cocktail-recipes/cocktail-recipes.component';
 import { FavouriteCocktailRecipesComponent } from './cocktail-recipes/favourite-cocktail-recipes/favourite-cocktail-recipes.component';
 import { LogInComponent } from './log-in/log-in.component';
+import { AuthGuardService } from './shared/auth-guard.service';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 const routes: Routes = [
   { path:"cocktails", component: CocktailRecipesComponent, children: [
     { path:":id", component: CocktailDetailComponent}
   ]},
-  { path:"shopping-list", component: ShoppingListComponent},
+  { path:"shopping-list", canActivate: [AuthGuardService], component: ShoppingListComponent},
   { path:"account", component: AccountComponent},
   { path:"logIn", component: LogInComponent},
-  { path:"favourites", component: FavouriteCocktailRecipesComponent},
-  { path: "**", component: CocktailRecipesComponent }
+  { path:"favourites", canActivate: [AuthGuardService], component: FavouriteCocktailRecipesComponent},
+  { path: "**", redirectTo: "cocktails" }
 ];
 
 @NgModule({

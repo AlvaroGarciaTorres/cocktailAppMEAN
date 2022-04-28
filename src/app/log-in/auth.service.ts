@@ -5,8 +5,8 @@ import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class LogInService {
-  isLogged = true;
+export class AuthService {
+  isAuthenticated = true;
   logInChanged = new Subject<boolean>();
 
   constructor(private router: Router) { }
@@ -15,13 +15,13 @@ export class LogInService {
   }
 
   logIn(){
-    this.isLogged = true;
-    this.logInChanged.next(this.isLogged);
+    this.isAuthenticated = true;
+    this.logInChanged.next(this.isAuthenticated);
   }
 
   logOut(){
-    this.isLogged = false;
-    this.logInChanged.next(this.isLogged);
+    this.isAuthenticated = false;
+    this.logInChanged.next(this.isAuthenticated);
   }
   
 }

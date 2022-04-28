@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Cocktail } from './cocktail-list/cocktail-item/cocktail.model';
 
 @Injectable({
@@ -9,7 +11,7 @@ export class CocktailsDbApiService {
   cocktailList: Cocktail[] = [];
   fetched: boolean = false;
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
 
   getAllCocktails(){
     let promises = [];
@@ -19,6 +21,10 @@ export class CocktailsDbApiService {
         .then(response => response.json())
         .then(response =>{  
           this.cocktailList[i] = response.drinks[0];
+          // this.httpClient.post(environment.API_URL + "cocktails", response.drinks[0])
+          // .subscribe(
+          //   (response) => console.log(response)
+          // )
           resolve(response.drinks[0]);
         })
         .catch(err => console.error(err));  
@@ -29,7 +35,8 @@ export class CocktailsDbApiService {
 
   fetchCocktails(){
     this.fetched = true;
-    return this.getAllCocktails();
+    //return this.getAllCocktails();
+    return this.httpClient.get<any>(environment.API_URL + "cocktails")
   }
 
   getCocktailList(){

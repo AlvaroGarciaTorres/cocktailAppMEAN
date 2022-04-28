@@ -13,11 +13,13 @@ import { HeaderComponent } from './header/header.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { CocktailItemComponent } from './cocktail-recipes/cocktail-list/cocktail-item/cocktail-item.component';
-import { LogInService } from './log-in/log-in.service';
+import { AuthService } from './log-in/auth.service';
 import { CocktailsDbApiService } from './cocktail-recipes/cocktails-db-api-service';
 import {MatCardModule} from '@angular/material/card';
 import { FavouriteCocktailRecipesComponent } from './cocktail-recipes/favourite-cocktail-recipes/favourite-cocktail-recipes.component';
 import { CocktailDetailComponent } from './cocktail-recipes/cocktail-list/cocktail-detail/cocktail-detail.component';
+import { AuthGuardService } from './shared/auth-guard.service';
+import { NgxStickySidebarModule } from '@smip/ngx-sticky-sidebar';
 
 @NgModule({
   declarations: [
@@ -38,9 +40,10 @@ import { CocktailDetailComponent } from './cocktail-recipes/cocktail-list/cockta
     BrowserAnimationsModule,
     MatSlideToggleModule,
     MatCardModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxStickySidebarModule
   ],
-  providers: [LogInService, CocktailsDbApiService],
+  providers: [AuthService, CocktailsDbApiService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

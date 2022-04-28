@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LogInService } from './log-in.service';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-log-in',
@@ -9,14 +9,14 @@ import { LogInService } from './log-in.service';
 })
 export class LogInComponent implements OnInit {
 
-  constructor(private logInService: LogInService,
+  constructor(private authService: AuthService,
               private router: Router) { }
 
   ngOnInit(): void {
   }
 
   onLogIn(){
-    this.logInService.logIn();
+    this.authService.logIn();
     this.router.navigate(["/cocktails"]);
   }
 

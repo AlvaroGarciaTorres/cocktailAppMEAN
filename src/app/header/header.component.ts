@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { LogInService } from '../log-in/log-in.service';
+import { AuthService } from '../log-in/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,22 +9,22 @@ import { LogInService } from '../log-in/log-in.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  isLogged: boolean;
+  isAuthenticated: boolean;
   logInStateSubscription: Subscription;
 
-  constructor(private logInService: LogInService,
+  constructor(private authService: AuthService,
               private router: Router) { }
 
   ngOnInit(): void {
-    this.isLogged = this.logInService.isLogged;
-    this.logInStateSubscription = this.logInService.logInChanged
+    this.isAuthenticated = this.authService.isAuthenticated;
+    this.logInStateSubscription = this.authService.logInChanged
       .subscribe(
-        (responseData) => this.isLogged = responseData
+        (responseData) => this.isAuthenticated = responseData
       )
   }
 
   onCLick(){
-    this.isLogged ? this.logInService.logOut() : this.router.navigate(["logIn"]);;
+    this.isAuthenticated ? this.authService.logOut() : this.router.navigate(["logIn"]);;
   }
 
   ngOnDestroy(){
