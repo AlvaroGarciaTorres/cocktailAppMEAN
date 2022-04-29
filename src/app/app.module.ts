@@ -19,7 +19,6 @@ import {MatCardModule} from '@angular/material/card';
 import { FavouriteCocktailRecipesComponent } from './cocktail-recipes/favourite-cocktail-recipes/favourite-cocktail-recipes.component';
 import { CocktailDetailComponent } from './cocktail-recipes/cocktail-list/cocktail-detail/cocktail-detail.component';
 import { AuthGuardService } from './shared/auth-guard.service';
-import { NgxStickySidebarModule } from '@smip/ngx-sticky-sidebar';
 
 @NgModule({
   declarations: [
@@ -40,8 +39,7 @@ import { NgxStickySidebarModule } from '@smip/ngx-sticky-sidebar';
     BrowserAnimationsModule,
     MatSlideToggleModule,
     MatCardModule,
-    HttpClientModule,
-    NgxStickySidebarModule
+    HttpClientModule
   ],
   providers: [AuthService, CocktailsDbApiService, AuthGuardService],
   bootstrap: [AppComponent]

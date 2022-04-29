@@ -1,17 +1,13 @@
-<div class="row main-content">
+<div class="row">
     <div 
-        class="fixed sidebar"
-        stickySidebar
-          [updateSticky]="updateSticky"
-          containerSelector=".main-content"
-          innerWrapperSelector=".sidebar__inner"
+        class="left-column"
+        #leftDiv
         *ngIf="showSelectedCocktail"
         >
-        <div class="sidebar__inner">
-            <router-outlet></router-outlet>
-        </div>
-    </div>
-    <div class="expand">
+        <router-outlet></router-outlet>
+    </div>  
+
+    <div [ngClass]="showSelectedCocktail ? 'right-column expand' : 'right-column'">
         <app-cocktail-list
             (cocktailChanged) = "onCocktailChanged($event)">
         </app-cocktail-list>
