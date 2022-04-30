@@ -1,10 +1,11 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+import { HOST, PORT} from "../../app/config/db.config.js";
 
 export const environment = {
   production: false,
-  API_URL: "http://localhost:49146/api/"
+  API_URL: `http://${HOST}:${PORT}/api/`
 };
 
 /*
