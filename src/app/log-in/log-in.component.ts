@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 
@@ -8,16 +8,26 @@ import { AuthService } from './auth.service';
   styleUrls: ['./log-in.component.scss']
 })
 export class LogInComponent implements OnInit {
+  @ViewChild('username') username: ElementRef;
+  @ViewChild('password') password: ElementRef;
+
+  error: boolean = false;
 
   constructor(private authService: AuthService,
               private router: Router) { }
 
   ngOnInit(): void {
+    this.authService.logInErrorChanged.subscribe(
+      (error) => {
+        this.error = error;
+        console.log(this.error)
+      }
+    )
   }
 
-  onLogIn(){
-    this.authService.logIn();
-    this.router.navigate(["/cocktails"]);
+  onLogIn(e){
+    e.preventDefault();
+    this.authService.logIn(this.username.nativeElement.value, this.password.nativeElement.value);
   }
 
 }

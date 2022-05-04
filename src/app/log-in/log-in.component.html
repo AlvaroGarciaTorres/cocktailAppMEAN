@@ -1,5 +1,24 @@
-<p>log-in works!</p>
-<button
-    (click)="onLogIn()">
-        Log In
-    </button>
+<div class="container">
+    <div class="col-md-6">
+        <form class="form">
+            <mat-form-field appearance="fill">
+                <mat-label>Username</mat-label>
+                <input matInput placeholder="Your name" #username>
+                <mat-error *ngIf="error">Error</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" placeholder="Your password" #password>
+                <mat-error *ngIf="error">Error</mat-error>
+            </mat-form-field>
+            <button 
+                mat-raised-button 
+                color="primary"
+                class="btn"
+                (click)="onLogIn($event)">
+                Log In
+            </button>
+        </form>   
+        <p class="signUpLink">Are you registered? <b class="blue">Sign up</b></p>      
+    </div>
+</div>

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const cocktailsModel = require("./cocktails.model");
 const User = mongoose.model(
   "User",
   new mongoose.Schema({
@@ -10,6 +11,8 @@ const User = mongoose.model(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Role"
       }
+    ],
+    favourites: [ String
     ]
   })
 );

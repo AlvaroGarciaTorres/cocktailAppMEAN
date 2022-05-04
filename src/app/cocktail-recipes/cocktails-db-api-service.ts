@@ -37,7 +37,7 @@ export class CocktailsDbApiService {
     this.fetched = true;
     //return this.getAllCocktails();
     //return this.httpClient.get<any>(environment.API_URL + "cocktails")
-    return this.httpClient.get<any>("http://localhost:8080/api/cocktails")
+    return this.httpClient.get<any>(`${environment.API_URL}cocktails`);
   }
 
   getCocktailList(){
