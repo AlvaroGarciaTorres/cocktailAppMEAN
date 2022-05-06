@@ -1,14 +1,22 @@
 <div class="row sticky" *ngIf="cocktail">
     <div class="row">
-        <h1>{{ cocktail.strDrink }}</h1>
+        <h1><b>{{ cocktail.strDrink }}</b></h1>
         <img class="cocktailImg img-fluid" src="{{ cocktail.strDrinkThumb }}" alt="cocktailImage">
         <hr class="my-5">
+        <h3><b>Instructions</b></h3>
         <p>{{ cocktail.strInstructions }}</p>
         <hr class="my-5">
         <div>
-            <h4>Ingredients</h4>
+            <h3 class="inline"><b>Ingredients</b></h3>
+            <button 
+                mat-raised-button 
+                color="primary"
+                class="btn inline mx-3 mb-3"
+                (click)="onAddToShoppingList()">
+                Add to shopping list
+            </button>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item" *ngFor="let ingredient of cocktailIngredients, let i = index">
+                <li class="list-group-item round-borders" *ngFor="let ingredient of cocktailIngredients, let i = index">
                     {{ ingredient[1] }}
                      -
                     {{ ingredientsMeasures[i][1] }}

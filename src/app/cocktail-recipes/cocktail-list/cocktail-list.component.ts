@@ -16,22 +16,22 @@ export class CocktailListComponent implements OnInit {
   @Output() cocktailChanged = new EventEmitter<boolean>();
 
   constructor(private cocktailsDbApiService: CocktailsDbApiService,
-              private router: Router
-              /*private route: Route*/) { }
+              private router: Router) { }
 
   ngOnInit(): void {
     if(!this.cocktailsDbApiService.fetched){
 //      this.cocktailsDbApiService.fetchCocktails().then((response => {  
       this.cocktailsDbApiService.fetchCocktails().subscribe((response => {
-        this.cocktailList = response;
-        console.log(this.cocktailList[0])
+        this.cocktailList = response.splice(0, 10);
+        //console.log(this.cocktailList[0])
+        console.log(this.cocktailList)
         this.cocktailsDbApiService.cocktailList = response;
         this.isLoading = false;
       }))         
     }
     else{
       this.isLoading = false;
-      this.cocktailList = this.cocktailsDbApiService.getCocktailList();
+      this.cocktailList = this.cocktailsDbApiService.getCocktailList().splice(0, 10);
     }
   }
 

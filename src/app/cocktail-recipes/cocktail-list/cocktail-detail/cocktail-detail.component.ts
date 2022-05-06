@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
 import { CocktailsDbApiService } from '../../cocktails-db-api-service';
 import { Cocktail } from '../cocktail-item/cocktail.model';
 
@@ -9,13 +10,13 @@ import { Cocktail } from '../cocktail-item/cocktail.model';
   styleUrls: ['./cocktail-detail.component.scss']
 })
 export class CocktailDetailComponent implements OnInit {
-  //isCocktailSelected: boolean = false;
   cocktail: Cocktail;
   cocktailIngredients;
   ingredientsMeasures;
 
   constructor(private route: ActivatedRoute,
-              private cocktailDbApiService: CocktailsDbApiService) { }
+              private cocktailDbApiService: CocktailsDbApiService,
+              private shoppingListService: ShoppingListService) { }
 
   ngOnInit(): void {
     //this.cocktail = this.cocktailDbApiService.cocktailList[this.route.snapshot.params['id']];
@@ -30,6 +31,10 @@ export class CocktailDetailComponent implements OnInit {
         console.log(this.ingredientsMeasures)
       }
     )
+  }
+
+  onAddToShoppingList(){
+    this.shoppingListService.addToShoppingList(this.cocktailIngredients);
   }
 
 }

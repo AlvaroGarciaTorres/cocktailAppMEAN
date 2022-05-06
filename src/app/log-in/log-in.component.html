@@ -1,24 +1,47 @@
 <div class="container">
     <div class="col-md-6">
-        <form class="form">
+        <form class="form" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
             <mat-form-field appearance="fill">
                 <mat-label>Username</mat-label>
-                <input matInput placeholder="Your name" #username>
-                <mat-error *ngIf="error">Error</mat-error>
+                <input 
+                    matInput 
+                    placeholder="Your name"
+                    formControlName="username" 
+                    #username>
+                <mat-error *ngIf="signInForm.get('username').invalid">
+                    Enter your username
+                </mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Password</mat-label>
-                <input matInput type="password" placeholder="Your password" #password>
-                <mat-error *ngIf="error">Error</mat-error>
+                <input 
+                    matInput 
+                    type="password" 
+                    placeholder="Your password"
+                    formControlName="password" 
+                    #password>
+                <mat-error *ngIf="!signInForm.get('password').valid">Enter your password</mat-error>
             </mat-form-field>
             <button 
                 mat-raised-button 
                 color="primary"
                 class="btn"
-                (click)="onLogIn($event)">
+                [disabled]="!signInForm.valid || !signInForm.touched ? true : false"
+                type="submit">
                 Log In
             </button>
+            <span 
+                class="text-danger mx-auto mt-3" 
+                *ngIf="error">
+                {{ error }}</span>
         </form>   
-        <p class="signUpLink">Are you registered? <b class="blue">Sign up</b></p>      
+        <p class="signUpLink">
+            Don't you have an account? 
+            <a class="pointer" (click)="onSignUp()">
+                <b class="blue">
+                    Sign up
+                </b>
+            </a>
+        </p>      
     </div>
 </div>

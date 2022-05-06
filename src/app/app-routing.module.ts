@@ -7,6 +7,7 @@ import { FavouriteCocktailRecipesComponent } from './cocktail-recipes/favourite-
 import { LogInComponent } from './log-in/log-in.component';
 import { AuthGuardService } from './shared/auth-guard.service';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { SigUpComponent } from './sig-up/sig-up.component';
 
 const routes: Routes = [
   { path:"cocktails", component: CocktailRecipesComponent, children: [
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path:"shopping-list", canActivate: [AuthGuardService], component: ShoppingListComponent},
   { path:"account", component: AccountComponent},
   { path:"logIn", component: LogInComponent},
+  { path:"signUp", component: SigUpComponent},
   { path:"favourites", canActivate: [AuthGuardService], component: FavouriteCocktailRecipesComponent},
   { path: "**", redirectTo: "cocktails" }
 ];

@@ -1,5 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Component({
@@ -7,27 +9,41 @@ import { AuthService } from './auth.service';
   templateUrl: './log-in.component.html',
   styleUrls: ['./log-in.component.scss']
 })
-export class LogInComponent implements OnInit {
-  @ViewChild('username') username: ElementRef;
-  @ViewChild('password') password: ElementRef;
+export class LogInComponent implements OnInit, OnDestroy {
+  signInForm: FormGroup;
+  errorSubscription: Subscription;
 
-  error: boolean = false;
+  error: string;
 
   constructor(private authService: AuthService,
               private router: Router) { }
 
   ngOnInit(): void {
-    this.authService.logInErrorChanged.subscribe(
+    this.errorSubscription = this.authService.errorChanged.subscribe(
       (error) => {
         this.error = error;
-        console.log(this.error)
       }
     )
+
+    this.signInForm = new FormGroup({
+      "username": new FormControl(null, [Validators.required]),
+      "password": new FormControl(null, Validators.required)
+    })
   }
 
-  onLogIn(e){
-    e.preventDefault();
-    this.authService.logIn(this.username.nativeElement.value, this.password.nativeElement.value);
+  ngOnDestroy(){
+    this.errorSubscription.unsubscribe();
+  }
+
+  onSubmit(){
+    console.log(this.signInForm)
+    let username = this.signInForm.controls['username'].value;
+    let password = this.signInForm.controls['password'].value;
+    this.authService.logIn(username, password);
+  }
+
+  onSignUp(){
+    this.router.navigate(['signUp']);
   }
 
 }

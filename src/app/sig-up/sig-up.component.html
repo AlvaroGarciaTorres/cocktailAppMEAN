@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="col-md-6">
+        <form class="form" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="fill">
+                <mat-label>Username</mat-label>
+                <input 
+                    matInput 
+                    placeholder="Your name"
+                    formControlName="username" 
+                    #username>
+                <mat-error 
+                    *ngIf="signUpForm.get('username').invalid">
+                    {{ getErrorMessage('username', usernameErrors, usernameMessages) }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input 
+                    matInput 
+                    placeholder="Your email"
+                    formControlName="email" 
+                    #username>
+                <mat-error 
+                    *ngIf="signUpForm.get('email').invalid">
+                    {{ getErrorMessage('email', emailErrors, emailMessages) }}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Enter your password</mat-label>
+                <input 
+                    matInput 
+                    type="password" 
+                    placeholder="Your password"
+                    formControlName="password" 
+                    #password>
+                <mat-error *ngIf="!signUpForm.get('password').valid">Enter a password</mat-error>
+            </mat-form-field>
+            <button 
+                mat-raised-button 
+                color="primary"
+                class="btn"
+                [disabled]="signUpForm.invalid || signUpForm.untouched"
+                type="submit">
+                Create Account
+            </button>
+            <span 
+                class="text-danger mx-auto mt-3" 
+                *ngIf="signUpError">
+                {{ signUpError }}
+            </span>
+        </form>   
+        <p class="signUpLink">
+            Are you already registered? 
+            <a class="pointer" (click)="onLogIn()">
+                <b class="blue">
+                    Log in
+                </b>
+            </a>
+        </p>      
+    </div>
+</div>
