@@ -25,7 +25,8 @@
             <button 
                 mat-raised-button 
                 color="primary"
-                class="btn"
+                class="disabled mt-3 "
+                [ngClass]="{'disabled': !signInForm.valid, 'btn': signInForm.valid}"
                 [disabled]="!signInForm.valid || !signInForm.touched ? true : false"
                 type="submit">
                 Log In

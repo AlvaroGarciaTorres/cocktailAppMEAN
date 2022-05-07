@@ -1,9 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Cocktail } from './cocktail-item/cocktail.model';
 import { CocktailsDbApiService } from '../cocktails-db-api-service';
-import { Route, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
+import { ThemePalette } from '@angular/material/core';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-cocktail-list',
@@ -15,14 +14,19 @@ export class CocktailListComponent implements OnInit {
   isLoading: boolean = true;
   @Output() cocktailChanged = new EventEmitter<boolean>();
 
+  //Spinner config
+  color: ThemePalette = 'primary';
+  mode: ProgressSpinnerMode = 'indeterminate';
+  diameter = 50;
+  value = 100;
+
   constructor(private cocktailsDbApiService: CocktailsDbApiService,
               private router: Router) { }
 
   ngOnInit(): void {
-    if(!this.cocktailsDbApiService.fetched){
-//      this.cocktailsDbApiService.fetchCocktails().then((response => {  
+    if(!this.cocktailsDbApiService.fetched){ 
       this.cocktailsDbApiService.fetchCocktails().subscribe((response => {
-        this.cocktailList = response.splice(0, 10);
+        this.cocktailList = response.slice(0, 10);
         //console.log(this.cocktailList[0])
         console.log(this.cocktailList)
         this.cocktailsDbApiService.cocktailList = response;
@@ -31,7 +35,7 @@ export class CocktailListComponent implements OnInit {
     }
     else{
       this.isLoading = false;
-      this.cocktailList = this.cocktailsDbApiService.getCocktailList().splice(0, 10);
+      this.cocktailList = this.cocktailsDbApiService.getCocktailList().slice(0, 10);
     }
   }
 

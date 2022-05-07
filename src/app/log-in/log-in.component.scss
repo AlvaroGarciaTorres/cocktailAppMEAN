@@ -10,12 +10,12 @@
     margin: 0 auto;
 }
 
-.btn{
+.btn,
+.disabled{
     max-width: fit-content;
 }
 
 .container{
-
     margin-top: 4rem;
 }
 
@@ -28,4 +28,10 @@
 
 .pointer{
     cursor: pointer;
+}
+
+.disabled,
+.disabled:hover{
+    cursor: not-allowed !important;
+    margin: 0 auto;
 }

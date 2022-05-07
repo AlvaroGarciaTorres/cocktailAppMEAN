@@ -13,7 +13,11 @@ const User = mongoose.model(
       }
     ],
     favourites: [ String
-    ]
+    ],
+    shoppingList: [{ 
+      ingredientName: {type: String}, 
+      disabled: {type: Boolean}
+    }]
   })
 );
 module.exports = User;

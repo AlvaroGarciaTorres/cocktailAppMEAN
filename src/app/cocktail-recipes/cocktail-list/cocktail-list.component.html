@@ -1,6 +1,6 @@
-<div class="row" *ngIf="!isLoading">
+<div class="row mt-4" *ngIf="!isLoading">
     <div class="col">
-        <h2>Select a Cocktail</h2>
+        <h1><b>Select a Cocktail</b></h1>
         <app-cocktail-item
             [index] = i
             [cocktail] = cocktail
@@ -9,9 +9,15 @@
         </app-cocktail-item>
     </div>
 </div>
-<div class="row" *ngIf="isLoading">
+<div class="row mt-4" *ngIf="isLoading">
     <div class="col">
-        Loading...
+        <mat-progress-spinner
+            class="spinner"
+            [color]="color"
+            [diameter]="diameter"
+            [mode]="mode"
+            [value]="value">
+    </mat-progress-spinner>
     </div> 
 </div>
 

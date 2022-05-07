@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AccountComponent } from './account/account.component';
 import { CocktailRecipesComponent } from './cocktail-recipes/cocktail-recipes.component';
 import { CocktailListComponent } from './cocktail-recipes/cocktail-list/cocktail-list.component';
 import { HeaderComponent } from './header/header.component';
@@ -23,12 +22,13 @@ import { AuthGuardService } from './shared/auth-guard.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SigUpComponent } from './sig-up/sig-up.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AccountComponent,
     CocktailRecipesComponent,
     CocktailListComponent,
     HeaderComponent,
@@ -49,6 +49,8 @@ import { SigUpComponent } from './sig-up/sig-up.component';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
     HttpClientModule
   ],
   providers: [AuthService, CocktailsDbApiService, AuthGuardService],

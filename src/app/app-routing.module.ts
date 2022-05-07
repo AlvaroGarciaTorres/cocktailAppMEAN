@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AccountComponent } from './account/account.component';
 import { CocktailDetailComponent } from './cocktail-recipes/cocktail-list/cocktail-detail/cocktail-detail.component';
 import { CocktailRecipesComponent } from './cocktail-recipes/cocktail-recipes.component';
 import { FavouriteCocktailRecipesComponent } from './cocktail-recipes/favourite-cocktail-recipes/favourite-cocktail-recipes.component';
@@ -14,7 +13,6 @@ const routes: Routes = [
     { path:":id", component: CocktailDetailComponent}
   ]},
   { path:"shopping-list", canActivate: [AuthGuardService], component: ShoppingListComponent},
-  { path:"account", component: AccountComponent},
   { path:"logIn", component: LogInComponent},
   { path:"signUp", component: SigUpComponent},
   { path:"favourites", canActivate: [AuthGuardService], component: FavouriteCocktailRecipesComponent},

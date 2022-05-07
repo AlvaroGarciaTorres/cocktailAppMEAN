@@ -1,9 +1,36 @@
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <ul>
-                <li class="list item" *ngFor="let ingredient of shoppingList">{{ ingredient }}</li>
+    <div class="row mt-4 mx-auto">
+        <h1><b>Ingredients needed</b></h1>
+        <div *ngIf="shoppingList.length" class="my-3 col list-group list-group-flush">           
+            <p>Toggle the ingredients to buy</p>
+            <ul class="reset-padding">
+                <li 
+                    class="list-group-item flex" 
+                    [ngClass]="{'text-disabled': ingredient.disabled}"
+                    *ngFor="let ingredient of shoppingList, let i = index">
+                    <mat-slide-toggle 
+                        [checked]="!ingredient.disabled"
+                        (change)="onDisableIngredient($event, i)">
+                        <span class="margin-l">{{ ingredient.ingredientName }}</span>
+                    </mat-slide-toggle>
+                </li>
             </ul>
+            <button 
+                mat-raised-button 
+                color="primary"
+                class="mt-3"
+                type="submit"
+                (click)="onSaveShoppingList()">
+                Save
+            </button>
+            <button 
+                mat-raised-button 
+                color="accent"
+                class="mt-3"
+                type="submit">
+                Toggle all
+            </button> 
         </div>
+        <p *ngIf="!shoppingList.length" class="my-3">No ingredients to show, add at least one cocktail and come back!</p>
     </div>
 </div>

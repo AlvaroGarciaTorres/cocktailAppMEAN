@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/log-in/auth.service';
+import { openSnackBar } from 'src/app/shared/utilities';
 import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
 import { CocktailsDbApiService } from '../../cocktails-db-api-service';
 import { Cocktail } from '../cocktail-item/cocktail.model';
@@ -16,7 +19,9 @@ export class CocktailDetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private cocktailDbApiService: CocktailsDbApiService,
-              private shoppingListService: ShoppingListService) { }
+              private shoppingListService: ShoppingListService,
+              private authService: AuthService,
+              private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     //this.cocktail = this.cocktailDbApiService.cocktailList[this.route.snapshot.params['id']];
@@ -34,7 +39,11 @@ export class CocktailDetailComponent implements OnInit {
   }
 
   onAddToShoppingList(){
-    this.shoppingListService.addToShoppingList(this.cocktailIngredients);
+    if(this.authService.isAuthenticated){
+      this.shoppingListService.addToShoppingList(this.cocktailIngredients);
+      openSnackBar(this._snackBar, "Added to your shopping list", "OK");
+    } else {
+      openSnackBar(this._snackBar, "You need to log in first", "OK");
+    }  
   }
-
 }

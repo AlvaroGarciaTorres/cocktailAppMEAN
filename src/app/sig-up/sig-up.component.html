@@ -10,7 +10,7 @@
                     #username>
                 <mat-error 
                     *ngIf="signUpForm.get('username').invalid">
-                    {{ getErrorMessage('username', usernameErrors, usernameMessages) }}
+                    {{ getError('username', usernameErrorOptions) }}
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill">
@@ -22,7 +22,7 @@
                     #username>
                 <mat-error 
                     *ngIf="signUpForm.get('email').invalid">
-                    {{ getErrorMessage('email', emailErrors, emailMessages) }}
+                    {{ getError('email', emailErrorOptions) }}
                 </mat-error>
             </mat-form-field>
             <mat-form-field appearance="fill">
@@ -38,7 +38,8 @@
             <button 
                 mat-raised-button 
                 color="primary"
-                class="btn"
+                class="btn mt-3"
+                [ngClass]="{'disabled': !signUpForm.valid, 'btn': signUpForm.valid}"
                 [disabled]="signUpForm.invalid || signUpForm.untouched"
                 type="submit">
                 Create Account
