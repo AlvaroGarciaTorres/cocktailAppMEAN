@@ -7,24 +7,26 @@ import { ShoppingListDbConnectionService } from './shopping-list-db-connection.s
   providedIn: 'root'
 })
 export class ShoppingListService {
-  shoppingList: { ingredientName: string, disabled: boolean }[] = [];
-  shoppingListChanged = new Subject<{ ingredientName: string, disabled: boolean }[]>();
+  shoppingList: { ingredientName: String, disabled: boolean }[] = [];
+  shoppingListChanged = new Subject<{ ingredientName: String, disabled: boolean }[]>();
 
   constructor(private shoppingListDbConnectionService: ShoppingListDbConnectionService,
-              private authService: AuthService) { }
+              private authService: AuthService) {
+                this.authService.logInChanged.subscribe(
+                  () => this.shoppingList = []
+                )
+              }
 
   fetchShoppingList(){
     return this.shoppingListDbConnectionService.fetchShoppingList(this.authService.userId);
   }
 
-  updateShoppingList(){
+  updateShoppingList(shoppingList: { ingredientName: String, disabled: boolean }[]){
+    this.shoppingList = shoppingList;
     this.shoppingListDbConnectionService.updateShoppingList(this.authService.userId, this.shoppingList);
   }
 
   getShoppingList(){
-    if(this.authService.logInChanged){
-      this.shoppingList = [];
-    }
     return this.shoppingList;
   }
 
@@ -35,7 +37,7 @@ export class ShoppingListService {
         this.shoppingList.push({ ingredientName: ingredientName, disabled: true });
       }      
     }
-    this.shoppingListChanged.next(this.shoppingList);
+    this.updateShoppingList(this.shoppingList);
   }
 
   checkIngredientsAreNotRepeated(ingredientName: string){

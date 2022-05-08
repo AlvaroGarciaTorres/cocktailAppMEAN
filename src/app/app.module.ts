@@ -24,7 +24,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
 import { SigUpComponent } from './sig-up/sig-up.component';
+import { ShoppingListService } from './shopping-list/shopping-list.service';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
@@ -51,9 +54,11 @@ import { SigUpComponent } from './sig-up/sig-up.component';
     MatButtonModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    HttpClientModule
+    MatIconModule,
+    HttpClientModule,
+    SweetAlert2Module.forRoot()
   ],
-  providers: [AuthService, CocktailsDbApiService, AuthGuardService],
+  providers: [AuthService, CocktailsDbApiService, AuthGuardService, ShoppingListService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

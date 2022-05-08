@@ -6,12 +6,20 @@
     padding: 0;
 }
 
-.row{
+.half{
     max-width: 50%;
 }
 
 .flex{
     display: flex;
+
+    &-gap-xs{
+        gap: .5rem;
+    }
+}
+
+.justify-content-center{
+    justify-content: center;
 }
 
 .margin-l{
@@ -19,4 +27,12 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.pos-right{
+    margin-left: auto;
+}
+
+.border-radius{
+    border-radius: 20px;
 }

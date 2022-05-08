@@ -11,7 +11,7 @@ import { openSnackBar } from '../shared/utilities';
 })
 export class AuthService {
   isAuthenticated = true;
-  userId: string;
+  userId: string = "62764d19bd409d0075f101b4";
   accessToken: string;
   logInChanged = new Subject<boolean>();
   errorChanged = new Subject<string>();

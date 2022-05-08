@@ -1,4 +1,6 @@
+const { send } = require("process");
 const db = require("../models");
+const User = require("../models/user.model");
 const Users = db.user;
 
 exports.findOne = (req, res) => {
