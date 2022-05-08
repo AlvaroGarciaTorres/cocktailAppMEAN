@@ -15,7 +15,9 @@ const routes: Routes = [
   { path:"shopping-list", canActivate: [AuthGuardService], component: ShoppingListComponent},
   { path:"logIn", component: LogInComponent},
   { path:"signUp", component: SigUpComponent},
-  { path:"favourites", canActivate: [AuthGuardService], component: FavouriteCocktailRecipesComponent},
+  { path:"favourites", canActivate: [AuthGuardService], component: FavouriteCocktailRecipesComponent, children: [
+    { path:":id", component: CocktailDetailComponent}
+  ]},
   { path: "**", redirectTo: "cocktails" }
 ];
 

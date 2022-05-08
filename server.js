@@ -27,6 +27,7 @@ app.use(cors());
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
 require('./app/routes/shoppingList.routes')(app);
+require('./app/routes/favourites.routes')(app);
 require('./app/routes/cocktails.routes')(app);
 
 // set port, listen for requests

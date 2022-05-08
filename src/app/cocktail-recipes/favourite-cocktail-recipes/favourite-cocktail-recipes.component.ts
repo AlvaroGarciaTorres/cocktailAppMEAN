@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Cocktail } from '../cocktail-list/cocktail-item/cocktail.model';
+import { CocktailsDbApiService } from '../cocktails-db-api-service';
+import { FavouritesService } from './favourites.service';
 
 @Component({
   selector: 'app-favourite-cocktail-recipes',
@@ -7,9 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FavouriteCocktailRecipesComponent implements OnInit {
 
-  constructor() { }
+  favouriteCocktails: Cocktail[] = [];
+
+  constructor(private favouritesService: FavouritesService) { }
 
   ngOnInit(): void {
+    this.favouritesService.fetchFavouritesList();
+    this.favouriteCocktails = this.favouritesService.getFavouritesList();
   }
 
 }

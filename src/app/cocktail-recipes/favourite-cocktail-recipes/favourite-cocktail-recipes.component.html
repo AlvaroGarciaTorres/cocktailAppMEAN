@@ -1,1 +1,28 @@
-<p>favourite-cocktail-recipes works!</p>
+<div class="container">
+    <h1 class="mt-4"><b>Favourite Cocktails</b></h1>
+    <div *ngIf="favouriteCocktails.length > 0" class="row row-gap my-4">
+        <div class="col-4" *ngFor="let cocktail of favouriteCocktails, let i = index">
+            <mat-card class="example-card adjust-height">
+                <mat-card-header>
+                  <div mat-card-avatar class="example-header-image"></div>
+                  <mat-card-title>{{ cocktail.strDrink }}</mat-card-title>
+                  <mat-card-subtitle>{{ cocktail.strCategory }}</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="{{cocktail.strDrinkThumb}}" alt="{{cocktail.strImageSource}}">
+                <mat-card-content class="mb-5">
+                  <p>
+                    {{cocktail.strInstructions.length > 200 ? cocktail.strInstructions.substr(0,200) + " (...)" : cocktail.strInstructions}}
+                  </p>
+                </mat-card-content>
+                <mat-card-actions class="stick-to-bottom">
+                  <button mat-button>VIEW</button>
+                  <button mat-button>DELETE</button>
+                </mat-card-actions>
+              </mat-card>
+        </div>
+    </div>
+    <div *ngIf="!favouriteCocktails.length" class="row">
+        <p>Favourite one of our delicious cocktails!</p>
+    </div>
+</div>
+<router-outlet></router-outlet>

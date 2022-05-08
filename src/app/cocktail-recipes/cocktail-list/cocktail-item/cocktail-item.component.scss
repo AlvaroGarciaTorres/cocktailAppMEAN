@@ -1,6 +1,22 @@
 .example-card{
     margin-top: .5rem;
     cursor: pointer;
+
+    &:hover .hidden{
+        display: block;
+        transform: scale(2);
+        color: white;
+
+        &:hover{
+            transition: all .5s;
+            color: rgba(255, 255, 79, 0.808);
+        }
+    }
+
+    &:hover{
+        transition: all 1s;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
 }
 
 img{
@@ -11,4 +27,12 @@ img{
     margin-right: 25%;
     text-align: justify;
     text-justify: inter-word;
+}
+
+.hidden{
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

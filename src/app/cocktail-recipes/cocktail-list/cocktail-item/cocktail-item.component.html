@@ -1,6 +1,5 @@
 <mat-card 
-    class="example-card"
-    (click)="onViewDetail()">
+    class="example-card">
     <mat-card-title-group>
         <mat-card-title>{{ cocktail.strDrink }}</mat-card-title>
         <mat-card-subtitle>{{ cocktail.strCategory }}</mat-card-subtitle>
@@ -9,4 +8,11 @@
     <mat-card-content class="instructions">
         {{ cocktail.strInstructions }}
     </mat-card-content>
+    <mat-icon 
+        class="hidden pointer" 
+        svgIcon="star" 
+        aria-hidden="false" 
+        aria-label="SVG delete icon"
+        (click)="onFavourite()">
+    </mat-icon>
 </mat-card>

@@ -1,5 +1,6 @@
 
 export class Cocktail{
+    _id: string;
     dateModified: string;
     idDrink: string;
     strAlcoholic: string;

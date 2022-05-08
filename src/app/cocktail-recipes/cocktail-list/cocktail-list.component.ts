@@ -28,7 +28,6 @@ export class CocktailListComponent implements OnInit {
       this.cocktailsDbApiService.fetchCocktails().subscribe((response => {
         this.cocktailList = response.slice(0, 10);
         //console.log(this.cocktailList[0])
-        console.log(this.cocktailList)
         this.cocktailsDbApiService.cocktailList = response;
         this.isLoading = false;
       }))         

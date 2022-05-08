@@ -28,12 +28,9 @@ export class CocktailDetailComponent implements OnInit {
     this.route.params.subscribe(
       (params) => {
         this.cocktail = this.cocktailDbApiService.cocktailList[params['id']];
-        console.log(this.cocktail)
         let fields = Object.entries(this.cocktail);
-        console.log(this.cocktail)
         this.cocktailIngredients = fields.filter(field => field[0].startsWith("strIng") && field[1] !== undefined && field[1] !== null && field[1].length > 0);
         this.ingredientsMeasures = fields.filter(field => field[0].startsWith("strMeas") && field[1] !== undefined && field[1] !== null && field[1].length > 0); 
-        console.log(this.ingredientsMeasures)
       }
     )
   }

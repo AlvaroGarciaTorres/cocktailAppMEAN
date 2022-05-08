@@ -1,0 +1,18 @@
+.adjust-height{
+    height: 100%;
+}
+
+.stick-to-bottom{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    bottom: 1rem;
+}
+
+.row-gap{
+    row-gap: 2rem;
+}
+
+.example-card:hover{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

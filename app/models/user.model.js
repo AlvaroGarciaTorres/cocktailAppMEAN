@@ -12,7 +12,11 @@ const User = mongoose.model(
         ref: "Role"
       }
     ],
-    favourites: [ String
+    favourites: [ 
+      {
+          type: mongoose.Schema.Types.ObjectId, 
+          ref:'Cocktail'
+      }
     ],
     shoppingList: [{ 
       ingredientName: {type: String}, 
