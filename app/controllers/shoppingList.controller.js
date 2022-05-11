@@ -28,7 +28,7 @@ exports.update = (req, resp) => {
     .then(data => {
         if(!data){
             resp.status(400).send({
-                message: "Could not update shopping list"
+                message: "Could not update shopping list, no ingredients provided"
             })
         }else{
             resp.send({

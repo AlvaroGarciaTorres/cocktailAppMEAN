@@ -13,7 +13,12 @@ export class FavouritesDbConnectionService {
     return this.http.get(`${environment.API_URL}favourites/${id}`);
   }
 
-  updateFavouritesList(id: String, cocktailId: String){
+  updateFavouritesListById(id: String, cocktailId: String){
     return this.http.put(`${environment.API_URL}favourites/${id}/${cocktailId}`, cocktailId);
+  }
+
+  updateFavouritesList(userId: String, favouritesList){
+    favouritesList = favouritesList.map(cocktail => cocktail._id);
+    return this.http.put(`${environment.API_URL}favourites/${userId}`, { favourites: favouritesList });
   }
 }

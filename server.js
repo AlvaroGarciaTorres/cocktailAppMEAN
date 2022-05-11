@@ -85,7 +85,7 @@ function initial() {
     }
   });
 }
-
+/*
 app.get('/api/cocktails', (request, response) => {
   console.log(request.headers)
     database.collection("Cocktails").find({}).toArray((error, result) => {
@@ -160,3 +160,4 @@ app.post('/api/cocktails', (request, response) => {
         }
     })
 })
+*/

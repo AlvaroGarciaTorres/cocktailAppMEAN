@@ -14,10 +14,9 @@ export class ShoppingListDbConnectionService {
   }
 
   updateShoppingList(id: String, body: { ingredientName: String, disabled: boolean }[]){
-    console.log(body)
     this.http.put(`${environment.API_URL}shoppingList/${id}`, { shoppingList: body }).subscribe(
-      (resp) => console.log(resp)
-    )
+      () => {return}
+    );
   }
 
 }

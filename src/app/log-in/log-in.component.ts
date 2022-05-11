@@ -36,7 +36,6 @@ export class LogInComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(){
-    console.log(this.signInForm)
     let username = this.signInForm.controls['username'].value;
     let password = this.signInForm.controls['password'].value;
     this.authService.logIn(username, password);

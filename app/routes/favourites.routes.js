@@ -6,6 +6,8 @@ module.exports = app => {
     app.get("/api/favourites/:id", favourites.findOne);
     // Update a favourites list with id
     app.put("/api/favourites/:id/:cocktail", favourites.update);
+    // Update favourites list with request body
+    app.put("/api/favourites/:id", favourites.updateAll);
 
 app.use('/api/shoppingList', router);
 };

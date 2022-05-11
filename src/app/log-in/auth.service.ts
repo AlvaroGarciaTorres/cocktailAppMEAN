@@ -26,7 +26,6 @@ export class AuthService {
   logIn(username, password){
     this.http.post(`${environment.API_URL}auth/signin`, { username: username, password: password }).subscribe(
       (resp) =>{
-          console.log(resp)
           this.isAuthenticated = true;
           this.userId = resp['id'];
           this.accessToken = resp['accessToken'];

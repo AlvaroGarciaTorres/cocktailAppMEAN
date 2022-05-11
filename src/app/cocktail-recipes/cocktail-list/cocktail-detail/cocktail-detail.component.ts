@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/log-in/auth.service';
 import { openSnackBar } from 'src/app/shared/utilities';
 import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
 import { CocktailsDbApiService } from '../../cocktails-db-api-service';
+import { CoktailRecipesService } from '../../coktail-recipes.service';
 import { Cocktail } from '../cocktail-item/cocktail.model';
 
 @Component({
@@ -18,7 +19,7 @@ export class CocktailDetailComponent implements OnInit {
   ingredientsMeasures;
 
   constructor(private route: ActivatedRoute,
-              private cocktailDbApiService: CocktailsDbApiService,
+              private cocktailService: CoktailRecipesService,
               private shoppingListService: ShoppingListService,
               private authService: AuthService,
               private _snackBar: MatSnackBar) { }
@@ -27,7 +28,7 @@ export class CocktailDetailComponent implements OnInit {
     //this.cocktail = this.cocktailDbApiService.cocktailList[this.route.snapshot.params['id']];
     this.route.params.subscribe(
       (params) => {
-        this.cocktail = this.cocktailDbApiService.cocktailList[params['id']];
+        this.cocktail = this.cocktailService.cocktailList[params['id']];
         let fields = Object.entries(this.cocktail);
         this.cocktailIngredients = fields.filter(field => field[0].startsWith("strIng") && field[1] !== undefined && field[1] !== null && field[1].length > 0);
         this.ingredientsMeasures = fields.filter(field => field[0].startsWith("strMeas") && field[1] !== undefined && field[1] !== null && field[1].length > 0); 

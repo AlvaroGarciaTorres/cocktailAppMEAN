@@ -1,21 +1,33 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand">Cocktails.Co</a>
+    <a class="navbar-brand mx-3">Cocktails.Co</a>
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
             <li 
                 class="nav-item"
                 routerLink="/cocktails">
-                <a class="nav-link active">Cocktails</a>
+                <a 
+                    routerLinkActive="active" 
+                    class="nav-link">
+                    Cocktails
+                </a>
             </li>
             <li 
                 class="nav-item"
                 routerLink="/favourites">
-                <a class="nav-link">Favourites</a>
+                <a 
+                    class="nav-link"
+                    routerLinkActive="active">
+                    Favourites
+                </a>
             </li>
             <li 
-            class="nav-item"
-            routerLink="/shopping-list">
-                <a class="nav-link">Shopping List</a>
+                class="nav-item"
+                routerLink="/shopping-list">
+                <a 
+                    class="nav-link"
+                    routerLinkActive="active">
+                    Shopping List
+                </a>
             </li>
         </ul>
         <button

@@ -29,6 +29,7 @@ import { SigUpComponent } from './sig-up/sig-up.component';
 import { ShoppingListService } from './shopping-list/shopping-list.service';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { FavouritesService } from './cocktail-recipes/favourite-cocktail-recipes/favourites.service';
+import { CoktailRecipesService } from './cocktail-recipes/coktail-recipes.service';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,7 @@ import { FavouritesService } from './cocktail-recipes/favourite-cocktail-recipes
     HttpClientModule,
     SweetAlert2Module.forRoot()
   ],
-  providers: [AuthService, CocktailsDbApiService, AuthGuardService, ShoppingListService, FavouritesService],
+  providers: [AuthService, CoktailRecipesService, AuthGuardService, ShoppingListService, FavouritesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

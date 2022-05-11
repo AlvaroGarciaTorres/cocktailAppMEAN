@@ -36,7 +36,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     if(!this.shoppingListService.getShoppingList().length){
       this.shoppingListService.fetchShoppingList().subscribe(
         (data) => {
-          console.log("fetch")
           data['shoppingList'].map(ingredient => this.shoppingList.push(ingredient))
         }
       )
@@ -48,7 +47,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
         this.shoppingList = shoppingList
       } 
     )
-    console.log(this.shoppingList);
   }
 
   ngOnDestroy(){
@@ -108,7 +106,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       cancelButtonText: 'CANCEL'
     }).then(
       (result) => {
-        console.log(result)
         if(result.isConfirmed) {
           cbk();
         }

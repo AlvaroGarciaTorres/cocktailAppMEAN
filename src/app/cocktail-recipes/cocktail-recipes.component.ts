@@ -1,6 +1,5 @@
 import { Component, ElementRef, HostBinding, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Event } from '@angular/router';
-import { Options } from '@popperjs/core/lib/modifiers/flip';
 
 @Component({
   selector: 'app-cocktail-recipes',

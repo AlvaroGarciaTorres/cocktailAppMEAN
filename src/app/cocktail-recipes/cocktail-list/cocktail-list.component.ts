@@ -1,17 +1,21 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { CocktailsDbApiService } from '../cocktails-db-api-service';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { CoktailRecipesService } from '../coktail-recipes.service';
+import { Subscription } from 'rxjs';
+import { Cocktail } from './cocktail-item/cocktail.model';
 
 @Component({
   selector: 'app-cocktail-list',
   templateUrl: './cocktail-list.component.html',
   styleUrls: ['./cocktail-list.component.scss']
 })
-export class CocktailListComponent implements OnInit {
+export class CocktailListComponent implements OnInit, OnDestroy {
   cocktailList = [];
   isLoading: boolean = true;
+  cocktailRecipesSubscription: Subscription;
+  fetchedSubscription: Subscription;
   @Output() cocktailChanged = new EventEmitter<boolean>();
 
   //Spinner config
@@ -20,22 +24,24 @@ export class CocktailListComponent implements OnInit {
   diameter = 50;
   value = 100;
 
-  constructor(private cocktailsDbApiService: CocktailsDbApiService,
+  constructor(private cocktailService: CoktailRecipesService,
               private router: Router) { }
 
   ngOnInit(): void {
-    if(!this.cocktailsDbApiService.fetched){ 
-      this.cocktailsDbApiService.fetchCocktails().subscribe((response => {
-        this.cocktailList = response.slice(0, 10);
-        //console.log(this.cocktailList[0])
-        this.cocktailsDbApiService.cocktailList = response;
-        this.isLoading = false;
-      }))         
-    }
-    else{
-      this.isLoading = false;
-      this.cocktailList = this.cocktailsDbApiService.getCocktailList().slice(0, 10);
-    }
+    this.cocktailList = this.cocktailService.getRecipes().slice(0, 10);
+    this.isLoading = !this.cocktailService.fetched;
+    this.cocktailRecipesSubscription = this.cocktailService.cocktailListChanged.subscribe(
+      (cocktaiLList: Cocktail[]) => this.cocktailList = cocktaiLList.slice(0, 10)
+    );
+
+    this.fetchedSubscription = this.cocktailService.fetchedChanged.subscribe(
+      (fetched: boolean) => this.isLoading = !fetched
+    )
+  }
+
+  ngOnDestroy(){
+    this.cocktailRecipesSubscription.unsubscribe();
+    this.fetchedSubscription.unsubscribe();
   }
 
   onSelectCocktail(id: number){

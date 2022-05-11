@@ -1,6 +1,6 @@
 <div class="container">
     <h1 class="mt-4"><b>Favourite Cocktails</b></h1>
-    <div *ngIf="favouriteCocktails.length > 0" class="row row-gap my-4">
+    <div *ngIf="!isLoading &&  favouriteCocktails.length > 0" class="row row-gap my-4">
         <div class="col-4" *ngFor="let cocktail of favouriteCocktails, let i = index">
             <mat-card class="example-card adjust-height">
                 <mat-card-header>
@@ -16,13 +16,24 @@
                 </mat-card-content>
                 <mat-card-actions class="stick-to-bottom">
                   <button mat-button>VIEW</button>
-                  <button mat-button>DELETE</button>
+                  <button mat-button (click)="onDelete(cocktail)">DELETE</button>
                 </mat-card-actions>
               </mat-card>
         </div>
     </div>
-    <div *ngIf="!favouriteCocktails.length" class="row">
+    <div *ngIf="!isLoading && !favouriteCocktails.length" class="row">
         <p>Favourite one of our delicious cocktails!</p>
     </div>
+</div>
+<div class="row mt-4" *ngIf="isLoading">
+  <div class="col">
+      <mat-progress-spinner
+          class="spinner"
+          [color]="color"
+          [diameter]="diameter"
+          [mode]="mode"
+          [value]="value">
+    </mat-progress-spinner>
+  </div> 
 </div>
 <router-outlet></router-outlet>
