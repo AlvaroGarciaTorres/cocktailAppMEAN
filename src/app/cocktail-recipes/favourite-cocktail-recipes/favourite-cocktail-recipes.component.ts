@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { deleteAlert } from 'src/app/shared/utilities';
 import { Cocktail } from '../cocktail-list/cocktail-item/cocktail.model';
-import { CocktailRecipesComponent } from '../cocktail-recipes.component';
 import { CoktailRecipesService } from '../coktail-recipes.service';
 import { FavouritesService } from './favourites.service';
 
@@ -17,6 +18,8 @@ export class FavouriteCocktailRecipesComponent implements OnInit, OnDestroy {
   fetchedSubscription: Subscription;
   isLoading: boolean = true;
   favouriteCocktails: Cocktail[] = [];
+  selectedCocktail: Cocktail;
+  tagList: String[] = [];
 
   //Spinner config
   color: ThemePalette = 'primary';
@@ -25,23 +28,45 @@ export class FavouriteCocktailRecipesComponent implements OnInit, OnDestroy {
   value = 100;
 
   constructor(private favouritesService: FavouritesService,
-              private cocktailService: CoktailRecipesService) { }
+              private cocktailService: CoktailRecipesService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    if(!this.favouritesService.getFavouritesList().length)
-    {
-      this.favouritesService.fetchFavouritesList();
-    }
-
     this.isLoading = !this.cocktailService.fetched;
     this.fetchedSubscription = this.cocktailService.fetchedChanged.subscribe(
-      (fetched: boolean) => this.isLoading = !fetched
+      (fetched: boolean) => {
+        this.isLoading = !fetched;
+      }
     )
     
     this.favouriteCocktails = this.favouritesService.getFavouritesList();
     this.favouritesSubscription = this.favouritesService.favouritesChanged.subscribe(
-      (favouritesList) => this.favouriteCocktails = favouritesList
+      (favouritesList) => {
+        this.favouriteCocktails = favouritesList;
+      }
     )
+
+    this.selectedCocktail = this.favouriteCocktails[this.activatedRoute.snapshot.queryParamMap.get('cocktail')];
+
+    this.activatedRoute.queryParamMap.subscribe(
+      (params) => {
+        this.selectedCocktail = this.favouriteCocktails[params.get('cocktail')];
+
+        this.tagList = [];
+
+        if(!this.selectedCocktail){
+          return;
+        }
+
+        if(this.selectedCocktail.strTags != undefined || this.selectedCocktail.strTags != null){
+          this.tagList = this.selectedCocktail.strTags.split(",");
+          return;
+        }
+
+        return;
+      }
+    );
   }
 
   ngOnDestroy(){
@@ -51,7 +76,20 @@ export class FavouriteCocktailRecipesComponent implements OnInit, OnDestroy {
   }
 
   onDelete(cocktail: Cocktail){
-    this.favouriteCocktails = this.favouriteCocktails.filter(cocktailItem => cocktailItem._id !== cocktail._id)
+    deleteAlert(`Do you want to delete '${cocktail.strDrink}' from your favourit list?`, () => {
+      this.favouriteCocktails = this.favouriteCocktails.filter(cocktailItem => cocktailItem._id !== cocktail._id)
+    })
+  }
+
+  onView(cocktail: Cocktail, i: number){
+    this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: { cocktail: i } })
+  }
+
+  onClose(e){
+    if(e.target.className === "modal-bg" || e.target.innerHTML === "close".toUpperCase()){
+      this.selectedCocktail = null;
+      this.router.navigate(['favourites']);
+    }
   }
 
 }

@@ -14,7 +14,6 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { CocktailItemComponent } from './cocktail-recipes/cocktail-list/cocktail-item/cocktail-item.component';
 import { AuthService } from './log-in/auth.service';
-import { CocktailsDbApiService } from './cocktail-recipes/cocktails-db-api-service';
 import { MatCardModule } from '@angular/material/card';
 import { FavouriteCocktailRecipesComponent } from './cocktail-recipes/favourite-cocktail-recipes/favourite-cocktail-recipes.component';
 import { CocktailDetailComponent } from './cocktail-recipes/cocktail-list/cocktail-detail/cocktail-detail.component';
@@ -25,6 +24,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
 import { SigUpComponent } from './sig-up/sig-up.component';
 import { ShoppingListService } from './shopping-list/shopping-list.service';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
@@ -57,6 +58,8 @@ import { CoktailRecipesService } from './cocktail-recipes/coktail-recipes.servic
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatIconModule,
+    MatDividerModule,
+    MatChipsModule,
     HttpClientModule,
     SweetAlert2Module.forRoot()
   ],

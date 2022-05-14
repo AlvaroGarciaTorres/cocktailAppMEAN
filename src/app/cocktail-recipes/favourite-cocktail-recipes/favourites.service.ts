@@ -31,20 +31,14 @@ export class FavouritesService {
               }
 
   fetchFavouritesList(){
-    this.favouritesDbService.fetchFavouritesList(this.authService.userId).subscribe(
-      (cocktailsIds) => {
-        this.fetched = true;
-        this.fetchedChanged.next(this.fetched);
-        this.getCoktailsInfo(cocktailsIds['favourites']);
-      }
-    );
+    return this.favouritesDbService.fetchFavouritesList(this.authService.userId);
   }
 
   getCoktailsInfo(cocktailsIds: String[]){
-    if(this.cocktailRecipesService.cocktailList.length){
+    if(this.cocktailRecipesService.fetched){
       this.getList(cocktailsIds, this.cocktailRecipesService.cocktailList)
     } else {
-      this.cocktailRecipesService.fetchRecipes();
+      this.cocktailRecipesService.getRecipes();
       this.cocktailRecipesService.cocktailListChanged.subscribe(
         (respCocktailsList) => {
           this.getList(cocktailsIds, respCocktailsList);
@@ -62,6 +56,16 @@ export class FavouritesService {
   }
 
   getFavouritesList(){
+    if(!this.fetched){
+      this.fetchFavouritesList().subscribe(
+        (cocktailsIds) => {
+          this.fetched = true;
+          this.fetchedChanged.next(this.fetched);
+          this.getCoktailsInfo(cocktailsIds['favourites']);
+          return;
+        }
+      );
+    }
     return this.favouritesList;
   }
 

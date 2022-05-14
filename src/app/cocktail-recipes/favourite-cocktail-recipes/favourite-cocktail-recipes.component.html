@@ -2,9 +2,8 @@
     <h1 class="mt-4"><b>Favourite Cocktails</b></h1>
     <div *ngIf="!isLoading &&  favouriteCocktails.length > 0" class="row row-gap my-4">
         <div class="col-4" *ngFor="let cocktail of favouriteCocktails, let i = index">
-            <mat-card class="example-card adjust-height">
+            <mat-card class="card adjust-height">
                 <mat-card-header>
-                  <div mat-card-avatar class="example-header-image"></div>
                   <mat-card-title>{{ cocktail.strDrink }}</mat-card-title>
                   <mat-card-subtitle>{{ cocktail.strCategory }}</mat-card-subtitle>
                 </mat-card-header>
@@ -15,7 +14,7 @@
                   </p>
                 </mat-card-content>
                 <mat-card-actions class="stick-to-bottom">
-                  <button mat-button>VIEW</button>
+                  <button mat-button (click)="onView(cocktail, i)">VIEW</button>
                   <button mat-button (click)="onDelete(cocktail)">DELETE</button>
                 </mat-card-actions>
               </mat-card>
@@ -36,4 +35,40 @@
     </mat-progress-spinner>
   </div> 
 </div>
-<router-outlet></router-outlet>
+<div *ngIf="selectedCocktail != undefined" (click)="onClose($event)" class="modal-bg">
+  <mat-card class="modal center-xy">
+    <mat-card-header>
+      <div mat-card-avatar class="modal-header-image">
+        <img class="modal-header-image" src="{{ selectedCocktail.strDrinkThumb }}" alt="Photo of a Shiba Inu">
+      </div>
+      <mat-card-title>{{ selectedCocktail.strDrink }}</mat-card-title>
+      <mat-card-subtitle>{{ selectedCocktail.strCategory }}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="{{ selectedCocktail.strDrinkThumb }}" alt="Photo of a Shiba Inu">
+    <mat-card-content>
+      <p class="my-4">
+        {{ selectedCocktail.strInstructions }}
+      </p>
+      <mat-divider ></mat-divider>
+      <div class="my-4" *ngIf="tagList.length > 0">
+        <p class="mt-5"><b>Tags</b></p>
+        <mat-chip-list
+        class="example-chip"
+        cdkDropList 
+        cdkDropListOrientation="horizontal"       
+        *ngIf="tagList.length > 0">
+        <mat-chip
+          class="example-box"
+          cdkDrag
+          *ngFor="let tag of tagList">
+          {{ tag }}
+        </mat-chip>
+      </mat-chip-list>
+      </div>      
+      <mat-divider></mat-divider>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button (click)="onClose($event)">CLOSE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

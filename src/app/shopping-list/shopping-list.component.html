@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row mt-4 mx-auto half">
         <h1><b>Ingredients needed</b></h1>
-        <div *ngIf="shoppingList.length" class="my-3 col list-group list-group-flush">           
+        <div *ngIf="!isLoading && shoppingList.length > 0" class="my-3 col list-group list-group-flush">           
             <p>Toggle the ingredients to buy</p>
             <ul class="reset-padding">
                 <li 
@@ -46,6 +46,17 @@
                 </button> 
             </div>       
         </div>
-        <p *ngIf="!shoppingList.length" class="my-3">No ingredients to show, add at least one cocktail and come back!</p>
+        <p *ngIf="!isLoading && !shoppingList.length && shoppingList != undefined" class="my-3">No ingredients to show, add at least one cocktail and come back!</p>
     </div>
+</div>
+<div class="row mt-4" *ngIf="isLoading">
+    <div class="col">
+        <mat-progress-spinner
+            class="spinner"
+            [color]="color"
+            [diameter]="diameter"
+            [mode]="mode"
+            [value]="value">
+        </mat-progress-spinner>
+    </div> 
 </div>

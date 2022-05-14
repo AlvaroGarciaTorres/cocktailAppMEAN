@@ -3,7 +3,9 @@ import { Subscription } from 'rxjs';
 import { ShoppingListService } from './shopping-list.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import swal from 'sweetalert2';
+import { deleteAlert } from '../shared/utilities';
+import { ThemePalette } from '@angular/material/core';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 
 const DELETE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z"/></svg>`
 
@@ -13,18 +15,16 @@ const DELETE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
   styleUrls: ['./shopping-list.component.scss']
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
-  shoppingList: { ingredientName: String, disabled: boolean}[];
+  shoppingList: { ingredientName: String, disabled: boolean}[] = undefined;
   shoppingListSubscription: Subscription;
-  swalConfig = { 
-    title: 'Delete', 
-    text: 'You are about to delete all the ingredients from your shopping list. Are you sure?', 
-    icon: 'warning',
-    showConfirmButton: false,
-    showDenyButton: true, 
-    denyButtonText: 'DELETE', 
-    showCancelButton: true,
-    cancelButtonText: 'CANCEL' 
-  }
+  fetchedSubscription: Subscription;
+  isLoading: boolean = true;
+
+  //Spinner config
+  color: ThemePalette = 'primary';
+  mode: ProgressSpinnerMode = 'indeterminate';
+  diameter = 50;
+  value = 100;
 
   constructor(private shoppingListService: ShoppingListService,
               private iconRegistry: MatIconRegistry, 
@@ -46,6 +46,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       (shoppingList) =>{
         this.shoppingList = shoppingList
       } 
+    )
+
+    this.isLoading = !this.shoppingListService.fetched;
+    this.fetchedSubscription = this.shoppingListService.fetchedChanged.subscribe(
+      (fetched) => this.isLoading = !fetched
     )
   }
 
@@ -70,7 +75,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   onDeleteIngredient(ingredientName){
-    this.deleteAlert(`You are about to delete '${ingredientName}' from your shopping list. Are you sure?`, () => this.deleteIngredient(ingredientName))
+    deleteAlert(`You are about to delete '${ingredientName}' from your shopping list. Are you sure?`, () => this.deleteIngredient(ingredientName))
   }
 
   deleteIngredient(ingredientName: String){
@@ -79,7 +84,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   onDeleteAll(){
-    this.deleteAlert('You are about to delete all the ingredients from your shopping list. Are you sure?', () => this.deleteAll())
+    deleteAlert('You are about to delete all the ingredients from your shopping list. Are you sure?', () => this.deleteAll())
   }
 
   deleteAll(){
@@ -92,25 +97,4 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.shoppingList.map(ingredient => ingredient.disabled = boolean);
     this.shoppingListService.shoppingListChanged.next(this.shoppingList);
   }
-
-
-
-  deleteAlert(message: string, cbk: Function){
-    swal.fire({
-      title: 'Delete?',
-      text: message,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      confirmButtonText: 'DELETE',
-      cancelButtonText: 'CANCEL'
-    }).then(
-      (result) => {
-        if(result.isConfirmed) {
-          cbk();
-        }
-      }
-    )
-  }
-
 }

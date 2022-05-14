@@ -1,7 +1,6 @@
 const { send } = require("process");
 const db = require("../models");
 const User = require("../models/user.model");
-// const User = require("../models/user.model");
 const Cocktails = db.cocktails;
 const Users = db.user;
 
@@ -53,7 +52,6 @@ exports.updateAll = (req, resp) => {
     const id = req.params.id;
     User.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
     .then(data => {
-        console.log(req.body)
         if(!req.body){
             return resp.status(400).send({
                 message: "Could not update favourites, no cocktails provided"

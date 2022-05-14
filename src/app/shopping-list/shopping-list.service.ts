@@ -9,6 +9,8 @@ import { ShoppingListDbConnectionService } from './shopping-list-db-connection.s
 export class ShoppingListService {
   shoppingList: { ingredientName: String, disabled: boolean }[] = [];
   shoppingListChanged = new Subject<{ ingredientName: String, disabled: boolean }[]>();
+  fetched: boolean = false;
+  fetchedChanged = new Subject<boolean>();
 
   constructor(private shoppingListDbConnectionService: ShoppingListDbConnectionService,
               private authService: AuthService) {
@@ -27,6 +29,15 @@ export class ShoppingListService {
   }
 
   getShoppingList(){
+    if(!this.shoppingList.length){
+      this.fetchShoppingList().subscribe(
+        () => {
+          this.fetched = true;
+          this.fetchedChanged.next(this.fetched);
+          return;
+        } 
+      )
+    }
     return this.shoppingList;
   }
 
