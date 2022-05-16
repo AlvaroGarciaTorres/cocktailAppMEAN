@@ -1,4 +1,5 @@
 const db = require("../models");
+var ObjectId = require('mongodb').ObjectId; 
 const Ingredients = db.ingredients;
 
 exports.create = (req, resp) => {
@@ -30,4 +31,18 @@ exports.createMany = (req, resp) => {
 
     Ingredients.insertMany(req.body);
     resp.send({message: "Ingredient added succesfully"});
+}
+
+exports.getById = (req, resp) => {
+    const id = req.params.id;
+    const o_id = new ObjectId(id.toString());
+    if(req.params.id.length === 0){
+        resp.status(400).send({message: "Include an ingredient please"});
+        return;
+    }
+
+    Ingredients.find({_id : ObjectId(id)})
+    .then(data => {
+        resp.send(data)
+    })
 }

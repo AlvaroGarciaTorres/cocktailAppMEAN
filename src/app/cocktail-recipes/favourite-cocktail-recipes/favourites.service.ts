@@ -57,6 +57,7 @@ export class FavouritesService {
 
   getFavouritesList(){
     if(!this.fetched){
+      this.favouritesList = [];
       this.fetchFavouritesList().subscribe(
         (cocktailsIds) => {
           this.fetched = true;

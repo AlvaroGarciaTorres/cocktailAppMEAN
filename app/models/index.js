@@ -8,6 +8,6 @@ db.user = require("./user.model");
 db.role = require("./role.model");
 db.ROLES = ["user", "admin", "moderator"];
 db.cocktail = require("./cocktails.model");
-db.cocktails = require("./cocktails.model.js")(mongoose);
+db.cocktails = require("./cocktails.model.js");
 db.ingredients = require("./ingredients.model");
 module.exports = db;

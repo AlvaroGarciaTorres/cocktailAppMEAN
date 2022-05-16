@@ -22,7 +22,7 @@ export class AppComponent implements OnInit{
         for(let i = 0; i < cocktailArray.length; i++){
           let fields = Object.entries(cocktailArray[i]);
           let strIngredients = fields.filter(field => {
-            return field[0].startsWith("strIng") && field[1] !== undefined && field[1] !== null;
+            return field[0].startsWith("strIng") && field[1] !== undefined && field[1] !== null && field[1].toString().length > 0;
           }).map(p => p[1]);
           let strIngredientsMeasures = fields.filter(field => field[0].startsWith("strMeas") && field[1] !== undefined && field[1] !== null)
           .map(p => p[1]);
@@ -62,9 +62,16 @@ export class AppComponent implements OnInit{
           cocktailArray[i].strIngredients = strIngredients;
           cocktailArray[i].strIngredientsMeasures = strIngredientsMeasures;
 
+          console.log(cocktailArray[i])
+
+          this.http.post(`${environment.API_URL}cocktails/`, cocktailArray[i]).subscribe(
+            (resp) => {
+              console.log(resp);
+            },
+            err => console.log(err.message)
+          )
         }
         console.log(resp)
-        //Aquí hacer el post
       }
     )
   }
@@ -79,7 +86,6 @@ export class AppComponent implements OnInit{
         })
         this.http.post(`${environment.API_URL}ingredients/createMany`, resp['drinks']).subscribe(
           (resp) => {
-
             console.log(resp);
           }
         )
@@ -93,7 +99,7 @@ export class AppComponent implements OnInit{
 
   getAllCocktails(){
     let promises = [];
-    for(let i = 0; i < 2; i++){
+    for(let i = 0; i < 0; i++){
       promises.push(new Promise<Cocktail>((resolve,reject) => {
         this.getRandomCocktail()
         .then(response => response.json())

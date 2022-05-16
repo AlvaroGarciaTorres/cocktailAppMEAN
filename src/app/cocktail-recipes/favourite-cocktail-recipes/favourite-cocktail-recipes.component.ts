@@ -3,6 +3,7 @@ import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/log-in/auth.service';
 import { deleteAlert } from 'src/app/shared/utilities';
 import { Cocktail } from '../cocktail-list/cocktail-item/cocktail.model';
 import { CoktailRecipesService } from '../coktail-recipes.service';
@@ -30,9 +31,16 @@ export class FavouriteCocktailRecipesComponent implements OnInit, OnDestroy {
   constructor(private favouritesService: FavouritesService,
               private cocktailService: CoktailRecipesService,
               private router: Router,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.authService.logInChanged.subscribe(
+      () => {
+        this.favouritesService.fetched = false;
+      }
+    )
+
     this.isLoading = !this.cocktailService.fetched;
     this.fetchedSubscription = this.cocktailService.fetchedChanged.subscribe(
       (fetched: boolean) => {
@@ -73,6 +81,7 @@ export class FavouriteCocktailRecipesComponent implements OnInit, OnDestroy {
     this.favouritesService.updateFavourites(this.favouriteCocktails);
     this.favouritesSubscription.unsubscribe();
     this.fetchedSubscription.unsubscribe();
+    this.favouriteCocktails = [];
   }
 
   onDelete(cocktail: Cocktail){
@@ -82,6 +91,7 @@ export class FavouriteCocktailRecipesComponent implements OnInit, OnDestroy {
   }
 
   onView(cocktail: Cocktail, i: number){
+    console.log(this.favouriteCocktails)
     this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: { cocktail: i } })
   }
 

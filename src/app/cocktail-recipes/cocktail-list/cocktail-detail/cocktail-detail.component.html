@@ -16,10 +16,10 @@
                 Add to shopping list
             </button>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item round-borders" *ngFor="let ingredient of cocktailIngredients, let i = index">
-                    {{ ingredient[1] }}
+                <li class="list-group-item round-borders" *ngFor="let ingredient of cocktailIngredientsNames, let i = index">
+                    {{ ingredient }}
                      -
-                    {{ ingredientsMeasures[i][1] }}
+                    {{ ingredientsMeasures[i] }}
                 </li>
             </ul>
         </div>

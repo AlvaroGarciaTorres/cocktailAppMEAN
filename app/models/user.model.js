@@ -19,7 +19,10 @@ const User = mongoose.model(
       }
     ],
     shoppingList: [{ 
-      ingredientName: {type: String}, 
+      ingredient: {        
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Ingredient"
+      }, 
       disabled: {type: Boolean}
     }]
   })
