@@ -29,6 +29,7 @@ require('./app/routes/user.routes')(app);
 require('./app/routes/shoppingList.routes')(app);
 require('./app/routes/favourites.routes')(app);
 require('./app/routes/cocktails.routes')(app);
+require('./app/routes/ingredients.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
@@ -40,7 +41,6 @@ const dbConfig = require("./app/config/db.config");
 const db = require("./app/models");
 const Role = db.role;
 db.mongoose
-  //.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
 .connect(db.url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -85,6 +85,7 @@ function initial() {
     }
   });
 }
+
 /*
 app.get('/api/cocktails', (request, response) => {
   console.log(request.headers)
