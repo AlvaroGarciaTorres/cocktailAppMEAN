@@ -6,6 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { deleteAlert } from '../shared/utilities';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { IngredientsService } from '../cocktail-recipes/cocktail-list/cocktail-detail/ingredients.service';
 
 const DELETE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z"/></svg>`
 
@@ -15,10 +16,12 @@ const DELETE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
   styleUrls: ['./shopping-list.component.scss']
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
-  shoppingList: { ingredientName: String, disabled: boolean}[] = undefined;
+  shoppingList: { _id: String, disabled: boolean}[] = [];
   shoppingListSubscription: Subscription;
   fetchedSubscription: Subscription;
   isLoading: boolean = true;
+  ingredientNames: String[] = [];
+  fetched: boolean = false;
 
   //Spinner config
   color: ThemePalette = 'primary';
@@ -28,29 +31,55 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   constructor(private shoppingListService: ShoppingListService,
               private iconRegistry: MatIconRegistry, 
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private ingredientService: IngredientsService) {
                 iconRegistry.addSvgIconLiteral('trash-can', sanitizer.bypassSecurityTrustHtml(DELETE_ICON));
               }
 
   ngOnInit(): void {
-    if(!this.shoppingListService.getShoppingList().length){
+
+    this.fetched = this.shoppingListService.fetched;
+    this.fetchedSubscription = this.shoppingListService.fetchedChanged.subscribe(
+      (data) => this.fetched = data
+    )
+
+    if(!this.fetched){
       this.shoppingListService.fetchShoppingList().subscribe(
         (data) => {
-          data['shoppingList'].map(ingredient => this.shoppingList.push(ingredient))
+          console.log(data)
+          if(data['shoppingList'].length === 0)
+          {
+            this.isLoading = false;
+          }
+
+          data['shoppingList'].map(ingredient => this.shoppingList.push(ingredient));
+          console.log(this.shoppingList)
+          this.shoppingList.map(ing => {
+            console.log(ing._id)
+            this.ingredientService.getIngredientName(ing._id).subscribe(
+              (data) => {
+                this.ingredientNames.push(data[0].strIngredient)
+              }
+            );
+            this.isLoading = false;
+          })
         }
       )
     }
 
-    this.shoppingList = this.shoppingListService.getShoppingList();
+    //this.shoppingList = this.shoppingListService.getShoppingList();
     this.shoppingListSubscription = this.shoppingListService.shoppingListChanged.subscribe(
       (shoppingList) =>{
-        this.shoppingList = shoppingList
+        this.shoppingList = shoppingList;
+        this.shoppingList.map(ing => {
+          this.ingredientService.getIngredientName(ing._id).subscribe(
+            (data) => {
+              console.log(data)
+              this.ingredientNames.push(data[0].strIngredient)
+            }
+          );
+        })
       } 
-    )
-
-    this.isLoading = !this.shoppingListService.fetched;
-    this.fetchedSubscription = this.shoppingListService.fetchedChanged.subscribe(
-      (fetched) => this.isLoading = !fetched
     )
   }
 
@@ -74,12 +103,12 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDeleteIngredient(ingredientName){
-    deleteAlert(`You are about to delete '${ingredientName}' from your shopping list. Are you sure?`, () => this.deleteIngredient(ingredientName))
+  onDeleteIngredient(index: number){
+    deleteAlert(`You are about to delete '${this.ingredientNames[index]}' from your shopping list. Are you sure?`, () => this.deleteIngredient(index))
   }
 
-  deleteIngredient(ingredientName: String){
-    this.shoppingList = this.shoppingList.filter(ingredient => ingredient.ingredientName !== ingredientName)
+  deleteIngredient(index: number){
+    this.shoppingList = this.shoppingList.splice(index);
     this.shoppingListService.shoppingListChanged.next(this.shoppingList);
   }
 

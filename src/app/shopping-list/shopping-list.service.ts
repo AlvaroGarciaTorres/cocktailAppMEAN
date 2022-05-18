@@ -7,8 +7,8 @@ import { ShoppingListDbConnectionService } from './shopping-list-db-connection.s
   providedIn: 'root'
 })
 export class ShoppingListService {
-  shoppingList: { ingredientId: String, disabled: boolean }[] = [];
-  shoppingListChanged = new Subject<{ ingredientId: String, disabled: boolean }[]>();
+  shoppingList: { _id: String, disabled: boolean }[] = [];
+  shoppingListChanged = new Subject<{ _id: String, disabled: boolean }[]>();
   fetched: boolean = false;
   fetchedChanged = new Subject<boolean>();
 
@@ -23,7 +23,7 @@ export class ShoppingListService {
     return this.shoppingListDbConnectionService.fetchShoppingList(this.authService.userId);
   }
 
-  updateShoppingList(shoppingList: { ingredientId: String, disabled: boolean }[]){
+  updateShoppingList(shoppingList: { _id: String, disabled: boolean }[]){
     this.shoppingList = shoppingList;
     this.shoppingListDbConnectionService.updateShoppingList(this.authService.userId, this.shoppingList);
   }
@@ -44,14 +44,15 @@ export class ShoppingListService {
   addToShoppingList(ingredients: String[]){
     for(let ingredient of ingredients){
       if(this.checkIngredientsAreNotRepeated(ingredient)){
-        this.shoppingList.push({ ingredientId: ingredient, disabled: true });
+        this.shoppingList.push({ _id: ingredient, disabled: true });
       }      
     }
+    this.shoppingListChanged.next(this.shoppingList);
     this.updateShoppingList(this.shoppingList);
   }
 
   checkIngredientsAreNotRepeated(ingredient: String){
-    return !this.shoppingList.filter(ing => ing.ingredientId == ingredient).length     
+    return !this.shoppingList.filter(ing => ing._id == ingredient).length     
   }
 
 }

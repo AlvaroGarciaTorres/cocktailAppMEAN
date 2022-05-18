@@ -11,14 +11,14 @@
                     <mat-slide-toggle 
                         [checked]="!ingredient.disabled"
                         (change)="onDisableIngredient(i)">
-                        <span class="margin-l">{{ ingredient.ingredientName }}</span>
+                        <span class="margin-l">{{ ingredientNames[i] }}</span>
                     </mat-slide-toggle>
                     <mat-icon 
                         class="pos-right pointer" 
                         svgIcon="trash-can" 
                         aria-hidden="false" 
                         aria-label="SVG delete icon"
-                        (click)="onDeleteIngredient(ingredient.ingredientName)">
+                        (click)="onDeleteIngredient(i)">
                     </mat-icon>
                 </li>
             </ul>

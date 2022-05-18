@@ -41,6 +41,8 @@ exports.getById = (req, resp) => {
         return;
     }
 
+    console.log(id)
+
     Ingredients.find({_id : ObjectId(id)})
     .then(data => {
         resp.send(data)

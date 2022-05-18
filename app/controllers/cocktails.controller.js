@@ -30,13 +30,13 @@ exports.create = (req, res) => {
           }
 
           //Creates new ingredient if not found
-          return Ingredient.create({strIngredient: ingredient})
+          return Ingredient.insertMany({strIngredient: ingredient})
           .then((data) => {
             return data._id.toString();
           })
           .catch(err => {
             res.status(500).send({
-              message: "Error whwn creating new ingredient"
+              message: "Error when creating new ingredient"
             })
           })
 
@@ -51,8 +51,6 @@ exports.create = (req, res) => {
 
     Promise.all(promises).then((data) => {
       req.body.strIngredients = data;
-
-      console.log("aqui ",req.body.strIngredient)
       
       Cocktail.insertMany(req.body)
       .then((data => {

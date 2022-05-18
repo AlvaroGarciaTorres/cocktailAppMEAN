@@ -39,21 +39,22 @@ export class CocktailDetailComponent implements OnInit {
         this.ingredientsMeasures = this.cocktail.strIngredientsMeasures;
         //sacar el nombre del ingrediente a partir del id
         this.cocktailIngredients.map(ingredient => {
+          console.log(ingredient)
           this.ingredientsService.getIngredientName(ingredient).subscribe(
             (data) => {
-              ingredient = data[0].strIngredient;
-              this.cocktailIngredientsNames.push(ingredient)
+              this.cocktailIngredientsNames.push(data[0].strIngredient)
               this.ingredientsChanged.next(this.cocktailIngredientsNames);
             }
           )
         })
+        console.log(this.cocktailIngredients)
       }
     )
   }
 
   onAddToShoppingList(){
+    console.log(this.cocktailIngredients)
     if(this.authService.isAuthenticated){
-      //console.log(this.cocktailIngredients)
       this.shoppingListService.addToShoppingList(this.cocktailIngredients);
       openSnackBar(this._snackBar, "Added to your shopping list", "OK");
     } else {

@@ -13,7 +13,7 @@ export class ShoppingListDbConnectionService {
     return this.http.get(`${environment.API_URL}shoppingList/${id}`);
   }
 
-  updateShoppingList(id: String, body: { ingredientId: String, disabled: boolean }[]){
+  updateShoppingList(id: String, body: { _id: String, disabled: boolean }[]){
     this.http.put(`${environment.API_URL}shoppingList/${id}`, { shoppingList: body }).subscribe(
       () => {return}
     );
