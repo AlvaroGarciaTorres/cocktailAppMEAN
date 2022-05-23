@@ -16,12 +16,10 @@ const DELETE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
   styleUrls: ['./shopping-list.component.scss']
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
-  shoppingList: { _id: String, disabled: boolean}[] = [];
+  shoppingList: { name: String, disabled: boolean}[];
   shoppingListSubscription: Subscription;
   fetchedSubscription: Subscription;
   isLoading: boolean = true;
-  ingredientNames: String[] = [];
-  fetched: boolean = false;
 
   //Spinner config
   color: ThemePalette = 'primary';
@@ -38,47 +36,21 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.fetched = this.shoppingListService.fetched;
+    this.isLoading = !this.shoppingListService.fetched;
     this.fetchedSubscription = this.shoppingListService.fetchedChanged.subscribe(
-      (data) => this.fetched = data
+      (data) => {
+        this.isLoading = !data;
+      }  
     )
 
-    if(!this.fetched){
-      this.shoppingListService.fetchShoppingList().subscribe(
-        (data) => {
-          console.log(data)
-          if(data['shoppingList'].length === 0)
-          {
-            this.isLoading = false;
-          }
-
-          data['shoppingList'].map(ingredient => this.shoppingList.push(ingredient));
-          console.log(this.shoppingList)
-          this.shoppingList.map(ing => {
-            console.log(ing._id)
-            this.ingredientService.getIngredientName(ing._id).subscribe(
-              (data) => {
-                this.ingredientNames.push(data[0].strIngredient)
-              }
-            );
-            this.isLoading = false;
-          })
-        }
-      )
+    if(!this.shoppingListService.fetched){
+      this.shoppingListService.fetchShoppingList();
     }
 
     //this.shoppingList = this.shoppingListService.getShoppingList();
     this.shoppingListSubscription = this.shoppingListService.shoppingListChanged.subscribe(
       (shoppingList) =>{
         this.shoppingList = shoppingList;
-        this.shoppingList.map(ing => {
-          this.ingredientService.getIngredientName(ing._id).subscribe(
-            (data) => {
-              console.log(data)
-              this.ingredientNames.push(data[0].strIngredient)
-            }
-          );
-        })
       } 
     )
   }
@@ -104,11 +76,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   onDeleteIngredient(index: number){
-    deleteAlert(`You are about to delete '${this.ingredientNames[index]}' from your shopping list. Are you sure?`, () => this.deleteIngredient(index))
+    deleteAlert(`You are about to delete '${this.shoppingList[index].name}' from your shopping list. Are you sure?`, () => this.deleteIngredient(index))
   }
 
   deleteIngredient(index: number){
-    this.shoppingList = this.shoppingList.splice(index);
+    this.shoppingList.splice(index, 1);
     this.shoppingListService.shoppingListChanged.next(this.shoppingList);
   }
 

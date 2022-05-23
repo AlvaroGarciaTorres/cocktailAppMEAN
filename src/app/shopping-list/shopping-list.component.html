@@ -11,7 +11,7 @@
                     <mat-slide-toggle 
                         [checked]="!ingredient.disabled"
                         (change)="onDisableIngredient(i)">
-                        <span class="margin-l">{{ ingredientNames[i] }}</span>
+                        <span class="margin-l">{{ shoppingList[i].name }}</span>
                     </mat-slide-toggle>
                     <mat-icon 
                         class="pos-right pointer" 

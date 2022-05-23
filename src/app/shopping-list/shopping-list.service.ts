@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { IngredientsService } from '../cocktail-recipes/cocktail-list/cocktail-detail/ingredients.service';
 import { AuthService } from '../log-in/auth.service';
 import { ShoppingListDbConnectionService } from './shopping-list-db-connection.service';
 
@@ -7,38 +8,48 @@ import { ShoppingListDbConnectionService } from './shopping-list-db-connection.s
   providedIn: 'root'
 })
 export class ShoppingListService {
-  shoppingList: { _id: String, disabled: boolean }[] = [];
-  shoppingListChanged = new Subject<{ _id: String, disabled: boolean }[]>();
-  fetched: boolean = false;
+  shoppingList: { _id: String, disabled: boolean }[];
+  ingredientNames: { name: String, disabled: boolean }[] = [];
+  shoppingListChanged = new Subject<{ name: String, disabled: boolean }[]>();
+  fetched: boolean;
   fetchedChanged = new Subject<boolean>();
 
   constructor(private shoppingListDbConnectionService: ShoppingListDbConnectionService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private ingredientService: IngredientsService) {
                 this.authService.logInChanged.subscribe(
                   () => this.shoppingList = []
                 )
               }
 
   fetchShoppingList(){
-    return this.shoppingListDbConnectionService.fetchShoppingList(this.authService.userId);
+    console.log("fetching")
+    this.shoppingListDbConnectionService.fetchShoppingList(this.authService.userId).subscribe(
+      (data) => {
+        this.shoppingList = data['shoppingList'].map(ing => {
+          this.ingredientService.getIngredientName(ing._id).subscribe(
+            (data) => {
+              console.log(ing.disabled)
+              this.ingredientNames.push({name: data[0].strIngredient, disabled: ing.disabled})
+            }
+          );
+        })
+        this.fetchedChanged.next(true);
+        this.shoppingListChanged.next(this.ingredientNames);
+      }
+    );
   }
 
-  updateShoppingList(shoppingList: { _id: String, disabled: boolean }[]){
-    this.shoppingList = shoppingList;
-    this.shoppingListDbConnectionService.updateShoppingList(this.authService.userId, this.shoppingList);
+  updateShoppingList(shoppingList: { name: String, disabled: boolean }[]){
+    this.ingredientNames = shoppingList;
+    //this.shoppingListDbConnectionService.updateShoppingList(this.authService.userId, this.shoppingList);
   }
 
   getShoppingList(){
     if(!this.shoppingList.length){
-      this.fetchShoppingList().subscribe(
-        () => {
-          this.fetched = true;
-          this.fetchedChanged.next(this.fetched);
-          return;
-        } 
-      )
+      this.fetchShoppingList();      
     }
-    return this.shoppingList;
+    return this.ingredientNames;
   }
 
   addToShoppingList(ingredients: String[]){
@@ -47,8 +58,8 @@ export class ShoppingListService {
         this.shoppingList.push({ _id: ingredient, disabled: true });
       }      
     }
-    this.shoppingListChanged.next(this.shoppingList);
-    this.updateShoppingList(this.shoppingList);
+    this.shoppingListChanged.next(this.ingredientNames);
+    this.updateShoppingList(this.ingredientNames);
   }
 
   checkIngredientsAreNotRepeated(ingredient: String){
