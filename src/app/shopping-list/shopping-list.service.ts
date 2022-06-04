@@ -8,10 +8,11 @@ import { ShoppingListDbConnectionService } from './shopping-list-db-connection.s
   providedIn: 'root'
 })
 export class ShoppingListService {
-  shoppingList: { _id: String, disabled: boolean }[];
-  ingredientNames: { name: String, disabled: boolean }[] = [];
-  shoppingListChanged = new Subject<{ name: String, disabled: boolean }[]>();
-  fetched: boolean;
+  shoppingList: { _id: String, disabled: boolean }[] = [];
+  ingredientNames: { _id: String, name: String, disabled: boolean }[] = [];
+  shoppingListChanged = new Subject<{ _id: String, disabled: boolean }[]>();
+  ingredientNamesChanged = new Subject<{ _id: String, name: String, disabled: boolean }[]>();
+  fetched: boolean = false;
   fetchedChanged = new Subject<boolean>();
 
   constructor(private shoppingListDbConnectionService: ShoppingListDbConnectionService,
@@ -23,47 +24,48 @@ export class ShoppingListService {
               }
 
   fetchShoppingList(){
-    console.log("fetching")
+    this.ingredientNames = [];
     this.shoppingListDbConnectionService.fetchShoppingList(this.authService.userId).subscribe(
       (data) => {
-        this.shoppingList = data['shoppingList'].map(ing => {
+        this.shoppingList = data['shoppingList'];
+        data['shoppingList'].map(ing => {
           this.ingredientService.getIngredientName(ing._id).subscribe(
             (data) => {
-              console.log(ing.disabled)
-              this.ingredientNames.push({name: data[0].strIngredient, disabled: ing.disabled})
+              this.ingredientNames.push({_id: ing._id,name: data[0].strIngredient, disabled: ing.disabled});
+              this.ingredientNamesChanged.next(this.ingredientNames);
             }
           );
         })
-        this.fetchedChanged.next(true);
-        this.shoppingListChanged.next(this.ingredientNames);
+        this.fetched = true;
+        this.fetchedChanged.next(this.fetched);
+        this.ingredientNamesChanged.next(this.ingredientNames);
       }
     );
   }
 
-  updateShoppingList(shoppingList: { name: String, disabled: boolean }[]){
-    this.ingredientNames = shoppingList;
-    //this.shoppingListDbConnectionService.updateShoppingList(this.authService.userId, this.shoppingList);
+  updateShoppingList(shoppingList: { _id: String, disabled: boolean }[]){
+    this.shoppingListDbConnectionService.updateShoppingList(this.authService.userId, shoppingList);
   }
 
   getShoppingList(){
-    if(!this.shoppingList.length){
-      this.fetchShoppingList();      
-    }
     return this.ingredientNames;
   }
 
   addToShoppingList(ingredients: String[]){
+    this.fetched = false;
     for(let ingredient of ingredients){
+      let ingredientName: String;
       if(this.checkIngredientsAreNotRepeated(ingredient)){
-        this.shoppingList.push({ _id: ingredient, disabled: true });
+        this.shoppingList.push({ _id: ingredient, disabled: true }); 
+    
       }      
     }
-    this.shoppingListChanged.next(this.ingredientNames);
-    this.updateShoppingList(this.ingredientNames);
+    this.shoppingListChanged.next(this.shoppingList);
+    this.updateShoppingList(this.shoppingList);  
   }
 
   checkIngredientsAreNotRepeated(ingredient: String){
-    return !this.shoppingList.filter(ing => ing._id == ingredient).length     
+    return !this.ingredientNames.filter(ing => ing._id == ingredient).length     
   }
 
 }

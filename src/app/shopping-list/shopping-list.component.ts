@@ -16,10 +16,10 @@ const DELETE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="
   styleUrls: ['./shopping-list.component.scss']
 })
 export class ShoppingListComponent implements OnInit, OnDestroy {
-  shoppingList: { name: String, disabled: boolean}[];
+  shoppingList: { _id: String, name: String, disabled: boolean}[] = [];
   shoppingListSubscription: Subscription;
   fetchedSubscription: Subscription;
-  isLoading: boolean = true;
+  isLoading: boolean;
 
   //Spinner config
   color: ThemePalette = 'primary';
@@ -35,7 +35,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
               }
 
   ngOnInit(): void {
-
     this.isLoading = !this.shoppingListService.fetched;
     this.fetchedSubscription = this.shoppingListService.fetchedChanged.subscribe(
       (data) => {
@@ -43,20 +42,24 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       }  
     )
 
-    if(!this.shoppingListService.fetched){
+    if(this.isLoading){
       this.shoppingListService.fetchShoppingList();
+    }
+    else{
+      this.shoppingList = this.shoppingListService.getShoppingList();
     }
 
     //this.shoppingList = this.shoppingListService.getShoppingList();
-    this.shoppingListSubscription = this.shoppingListService.shoppingListChanged.subscribe(
+    this.shoppingListSubscription = this.shoppingListService.ingredientNamesChanged.subscribe(
       (shoppingList) =>{
         this.shoppingList = shoppingList;
+        console.log(this.shoppingList);
       } 
     )
   }
 
   ngOnDestroy(){
-    this.shoppingListService.updateShoppingList(this.shoppingList);
+    //this.shoppingListService.updateShoppingList(this.shoppingList);
     this.shoppingListSubscription.unsubscribe();
   }
 
@@ -82,6 +85,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   deleteIngredient(index: number){
     this.shoppingList.splice(index, 1);
     this.shoppingListService.shoppingListChanged.next(this.shoppingList);
+    this.shoppingListService.updateShoppingList(this.shoppingList);
   }
 
   onDeleteAll(){
@@ -91,7 +95,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   deleteAll(){
     this.shoppingList = [];
     this.shoppingListService.shoppingListChanged.next(this.shoppingList);
-
+    this.shoppingListService.updateShoppingList(this.shoppingList);
   }
 
   onToggleAll(boolean: boolean){   

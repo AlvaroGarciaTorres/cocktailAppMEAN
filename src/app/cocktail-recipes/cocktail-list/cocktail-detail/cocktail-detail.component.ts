@@ -39,7 +39,6 @@ export class CocktailDetailComponent implements OnInit {
         this.ingredientsMeasures = this.cocktail.strIngredientsMeasures;
         //sacar el nombre del ingrediente a partir del id
         this.cocktailIngredients.map(ingredient => {
-          console.log(ingredient)
           this.ingredientsService.getIngredientName(ingredient).subscribe(
             (data) => {
               this.cocktailIngredientsNames.push(data[0].strIngredient)
@@ -47,7 +46,6 @@ export class CocktailDetailComponent implements OnInit {
             }
           )
         })
-        console.log(this.cocktailIngredients)
       }
     )
   }
