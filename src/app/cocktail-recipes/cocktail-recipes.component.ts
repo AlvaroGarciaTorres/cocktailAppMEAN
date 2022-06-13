@@ -1,5 +1,4 @@
-import { Component, ElementRef, HostBinding, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { Event } from '@angular/router';
+import { Component, ElementRef, HostBinding, HostListener, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-cocktail-recipes',
@@ -12,9 +11,9 @@ export class CocktailRecipesComponent{
   @HostBinding('style.backgroundColor') backgroundColor: string = 'white';
   @HostBinding('style.transition') transition: string = 'background-color 3s';
 
-  constructor(private renderer: Renderer2){}
+  constructor(){}
 
-  @HostListener('window:scroll', ['$event'])onScroll(eventData: Event){
+  @HostListener('window:scroll', ['$event'])onScroll(){
     if(this.leftDiv !== undefined){
       if(window.pageYOffset > 40){
         this.leftDiv.nativeElement.classList.add("stick-to-top");

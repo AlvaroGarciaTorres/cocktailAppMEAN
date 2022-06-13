@@ -1,13 +1,5 @@
 import { FormControl, FormGroup } from "@angular/forms";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import swal from 'sweetalert2';
-
-export function openSnackBar(_snackBar: MatSnackBar, message: string, action: string) {
-    _snackBar.open(message, action, {panelClass: ['mat-toolbar']});
-    setTimeout(() => {
-        _snackBar.dismiss();
-    },3000);
-}
 
 export function getErrorMessage(formGroup: FormGroup, formControlName: string, errorOptions: { type:string, message: string}[]): string{
     const form: FormControl = (formGroup.get(formControlName) as FormControl);

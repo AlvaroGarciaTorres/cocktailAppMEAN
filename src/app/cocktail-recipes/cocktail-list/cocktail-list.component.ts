@@ -27,11 +27,11 @@ export class CocktailListComponent implements OnInit, OnDestroy {
   constructor(private cocktailService: CoktailRecipesService,
               private router: Router) { }
 
-  ngOnInit(): void {
-    this.cocktailList = this.cocktailService.getRecipes().slice(0, 10);
+  ngOnInit(){
+    this.cocktailList = this.cocktailService.getRecipes();
     this.isLoading = !this.cocktailService.fetched;
     this.cocktailRecipesSubscription = this.cocktailService.cocktailListChanged.subscribe(
-      (cocktaiLList: Cocktail[]) => this.cocktailList = cocktaiLList.slice(0, 10)
+      (cocktaiLList: Cocktail[]) => this.cocktailList = cocktaiLList
     );
 
     this.fetchedSubscription = this.cocktailService.fetchedChanged.subscribe(

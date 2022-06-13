@@ -14,7 +14,7 @@
                   </p>
                 </mat-card-content>
                 <mat-card-actions class="stick-to-bottom">
-                  <button mat-button (click)="onView(cocktail, i)">VIEW</button>
+                  <button mat-button (click)="onView(i)">VIEW</button>
                   <button mat-button (click)="onDelete(cocktail)">DELETE</button>
                 </mat-card-actions>
               </mat-card>
@@ -39,12 +39,12 @@
   <mat-card class="modal center-xy">
     <mat-card-header>
       <div mat-card-avatar class="modal-header-image">
-        <img class="modal-header-image" src="{{ selectedCocktail.strDrinkThumb }}" alt="Photo of a Shiba Inu">
+        <img class="modal-header-image" src="{{ selectedCocktail.strDrinkThumb }}" alt="Photo of a cocktail">
       </div>
       <mat-card-title>{{ selectedCocktail.strDrink }}</mat-card-title>
       <mat-card-subtitle>{{ selectedCocktail.strCategory }}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="{{ selectedCocktail.strDrinkThumb }}" alt="Photo of a Shiba Inu">
+    <img mat-card-image src="{{ selectedCocktail.strDrinkThumb }}" alt="Photo of a cocktail">
     <mat-card-content>
       <p class="my-4">
         {{ selectedCocktail.strInstructions }}

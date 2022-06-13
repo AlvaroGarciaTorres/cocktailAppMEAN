@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { openSnackBar } from '../shared/utilities';
+import { openSnackBar } from '../shared/snackBar';
 
 @Injectable({
   providedIn: 'root'
@@ -23,27 +23,29 @@ export class AuthService {
   ngOnInit(){
   }
 
-  logIn(username, password){
+  logIn(username: String, password: String){
     this.http.post(`${environment.API_URL}auth/signin`, { username: username, password: password }).subscribe(
-      (resp) =>{
+      {
+        next: (resp) =>{
           this.isAuthenticated = true;
           this.userId = resp['id'];
           this.accessToken = resp['accessToken'];
           openSnackBar(this._snackBar, "Log in succesfull", "OK");
           this.router.navigate(['cocktails']);
           this.errorChanged.next("");
-      },
-      (error) => {
+        },
+        error: (error) => {
           this.isAuthenticated = false;
           this.errorChanged.next(error.error.message);
-      },
-      () => {
-        this.logInChanged.next(this.isAuthenticated);
+        },
+        complete: () => {
+          this.logInChanged.next(this.isAuthenticated);
+        }
       }
-    )   
+    ) 
   }
 
-  signUp(username, email, password){
+  signUp(username: String, email: String, password: String){
     this.http.post(`${environment.API_URL}auth/signup`, { username: username, email: email, password: password }).subscribe(
       (resp) =>{
           openSnackBar(this._snackBar, "Sign up succesfull", "OK");

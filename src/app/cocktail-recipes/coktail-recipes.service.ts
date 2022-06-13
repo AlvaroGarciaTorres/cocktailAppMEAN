@@ -17,7 +17,6 @@ export class CoktailRecipesService {
   fetchRecipes(){
     this.cocktailDbService.fetchCocktails().subscribe(
       (cocktailList: Cocktail[]) => {
-        console.log('fetch')
         this.fetched = true;
         this.fetchedChanged.next(this.fetched);
         this.cocktailList = cocktailList;  

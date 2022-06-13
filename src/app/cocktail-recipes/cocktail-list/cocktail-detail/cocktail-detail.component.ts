@@ -3,9 +3,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { AuthService } from 'src/app/log-in/auth.service';
-import { openSnackBar } from 'src/app/shared/utilities';
+import { ADDED_TO_SHOPPING_LIST_MESSAGE, LOG_IN_FIRST_MESSAGE, OK_CONFIRMATION_MESSAGE, openSnackBar } from 'src/app/shared/snackBar';
 import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
-import { CocktailsDbApiService } from '../../cocktails-db-api-service';
 import { CoktailRecipesService } from '../../coktail-recipes.service';
 import { Cocktail } from '../cocktail-item/cocktail.model';
 import { IngredientsService } from './ingredients.service';
@@ -30,14 +29,13 @@ export class CocktailDetailComponent implements OnInit {
               private ingredientsService: IngredientsService) { }
 
   ngOnInit(): void {
-    //this.cocktail = this.cocktailDbApiService.cocktailList[this.route.snapshot.params['id']];
     this.route.params.subscribe(
       (params) => {
         this.cocktail = this.cocktailService.cocktailList[params['id']];
         this.cocktailIngredientsNames = []
         this.cocktailIngredients = this.cocktail.strIngredients;
         this.ingredientsMeasures = this.cocktail.strIngredientsMeasures;
-        //sacar el nombre del ingrediente a partir del id
+        //Get the ingredient name from its id
         this.cocktailIngredients.map(ingredient => {
           this.ingredientsService.getIngredientName(ingredient).subscribe(
             (data) => {
@@ -54,9 +52,9 @@ export class CocktailDetailComponent implements OnInit {
     console.log(this.cocktailIngredients)
     if(this.authService.isAuthenticated){
       this.shoppingListService.addToShoppingList(this.cocktailIngredients);
-      openSnackBar(this._snackBar, "Added to your shopping list", "OK");
+      openSnackBar(this._snackBar, ADDED_TO_SHOPPING_LIST_MESSAGE, OK_CONFIRMATION_MESSAGE);
     } else {
-      openSnackBar(this._snackBar, "You need to log in first", "OK");
+      openSnackBar(this._snackBar, LOG_IN_FIRST_MESSAGE, OK_CONFIRMATION_MESSAGE);
     }  
   }
 }

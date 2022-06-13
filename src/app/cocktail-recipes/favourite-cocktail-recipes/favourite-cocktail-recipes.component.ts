@@ -1,7 +1,8 @@
+import { HttpEvent } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Event, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/log-in/auth.service';
 import { deleteAlert } from 'src/app/shared/utilities';
@@ -90,8 +91,7 @@ export class FavouriteCocktailRecipesComponent implements OnInit, OnDestroy {
     })
   }
 
-  onView(cocktail: Cocktail, i: number){
-    console.log(this.favouriteCocktails)
+  onView(i: number){
     this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: { cocktail: i } })
   }
 

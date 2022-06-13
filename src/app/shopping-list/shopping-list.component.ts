@@ -49,7 +49,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
       this.shoppingList = this.shoppingListService.getShoppingList();
     }
 
-    //this.shoppingList = this.shoppingListService.getShoppingList();
     this.shoppingListSubscription = this.shoppingListService.ingredientNamesChanged.subscribe(
       (shoppingList) =>{
         this.shoppingList = shoppingList;
@@ -59,7 +58,6 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    //this.shoppingListService.updateShoppingList(this.shoppingList);
     this.shoppingListSubscription.unsubscribe();
   }
 
@@ -68,7 +66,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.rearrangeShoppingList(i);
   }
 
-  rearrangeShoppingList(i){
+  rearrangeShoppingList(i: number){
     let ingredientChanged = this.shoppingList[i];
     this.shoppingList.splice(i, 1);
     if(ingredientChanged.disabled){

@@ -6,7 +6,7 @@ import { FavouritesDbConnectionService } from './favourites-db-connection.servic
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DomSanitizer } from '@angular/platform-browser';
-import { openSnackBar } from 'src/app/shared/utilities';
+import { OK_CONFIRMATION_MESSAGE, FAVOURITES_CONFIRMATION_MESSAGE, openSnackBar } from 'src/app/shared/snackBar';
 import { CoktailRecipesService } from '../coktail-recipes.service';
 
 const STAR_ICON = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.834 9.686l-4.166.575 3.032 2.914-.74 4.139 3.708-1.982 3.708 1.983-.74-4.139 3.032-2.915-4.166-.575-1.834-3.784-1.834 3.784z"/></svg>`
@@ -31,7 +31,7 @@ export class FavouritesService {
               }
 
   fetchFavouritesList(){
-    return this.favouritesDbService.fetchFavouritesList(this.authService.userId);
+    return this.favouritesDbService.getFavouritesListFromDb(this.authService.userId);
   }
 
   getCoktailsInfo(cocktailsIds: String[]){
@@ -63,7 +63,7 @@ export class FavouritesService {
           this.fetched = true;
           this.fetchedChanged.next(this.fetched);
           this.getCoktailsInfo(cocktailsIds['favourites']);
-          return;
+          // return;
         }
       );
     }
@@ -75,10 +75,10 @@ export class FavouritesService {
       () => {
         this.favouritesList.push(cocktail);
         this.favouritesChanged.next(this.favouritesList);
-        openSnackBar(this._snackBar, "Cocktail added to favourites", "OK");
+        openSnackBar(this._snackBar, FAVOURITES_CONFIRMATION_MESSAGE, OK_CONFIRMATION_MESSAGE);
       },
       (err) => {
-        openSnackBar(this._snackBar, err.error.message, "OK")
+        openSnackBar(this._snackBar, err.error.message, OK_CONFIRMATION_MESSAGE)
       }  
     )
   }
