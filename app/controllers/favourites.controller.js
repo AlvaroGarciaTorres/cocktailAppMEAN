@@ -22,7 +22,6 @@ exports.update = (req, resp) => {
     const cocktail = req.params.cocktail;
     Users.findById(id)
     .then(user => {
-        console.log(user.favourites.indexOf(cocktail))
         if(user.favourites.indexOf(cocktail) >= 0){
             return resp.status(400).send({
                 message: "That cocktail is already in your favourites!"

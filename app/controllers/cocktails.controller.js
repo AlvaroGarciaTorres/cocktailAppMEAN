@@ -10,7 +10,6 @@ exports.create = (req, res) => {
   //Check cocktail already existed
   Cocktail.findOne({ strDrink: req.body.strDrink })
   .then(data => {
-    console.log(data)
     if(data != null){
       res.status(400).send({
         message: "Cocktail already registered"
